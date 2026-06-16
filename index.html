@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- 文字コードをUTF-8に設定 -->
+  <meta charset="UTF-8" />
+  <!-- レスポンシブ対応のためのビューポート設定 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- ページタイトル -->
+  <title>学内ポータル</title>
+  <!-- Google Fontsの読み込み（見出し用Serif + 本文用Sans-serif） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ========================================
+       リセットCSS・基本設定
+       ======================================== */
+
+    /* すべての要素のマージン・パディングをリセットし、box-sizingを統一 */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ページ全体のフォントと背景色を設定（本文はゴシック体） */
+    body {
+      font-family: "Noto Sans JP", "Hiragino Sans", "Meiryo", sans-serif; /* 読みやすいゴシック体 */
+      background-color: #f6f8fb; /* ごく薄いグレーブルーの背景 */
+      color: #23272f; /* 濃い墨色の文字 */
+      line-height: 1.8; /* 行間をゆったりと */
+      min-height: 100vh; /* 画面の高さいっぱいに */
+      font-weight: 400; /* 標準の太さ */
+      -webkit-font-smoothing: antialiased; /* フォント描画をなめらかに（Mac） */
+      -moz-osx-font-smoothing: grayscale; /* フォント描画をなめらかに（Firefox） */
+    }
+
+    /* 見出し用のフォント設定（明朝体／セリフ系） */
+    h1, h2, h3, .card-title, .modal-title {
+      font-family: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", serif; /* 上品な明朝体 */
+    }
+
+    /* ========================================
+       ヘッダー
+       ======================================== */
+
+    /* ヘッダー全体のスタイル（白ベースで上品に） */
+    .header {
+      background-color: #ffffff; /* 白い背景 */
+      padding: 0 32px; /* 左右にゆとりある余白 */
+      position: sticky; /* スクロールしても上部に固定 */
+      top: 0; /* 最上部に固定 */
+      z-index: 100; /* 他の要素より手前に表示 */
+      border-bottom: 1px solid #e8ecf1; /* 下に細い線 */
+    }
+
+    /* ヘッダー内のレイアウト（横並び） */
+    .header-inner {
+      max-width: 1100px; /* 最大幅を制限 */
+      margin: 0 auto; /* 中央揃え */
+      display: flex; /* 横並びレイアウト */
+      align-items: center; /* 縦方向の中央揃え */
+      justify-content: space-between; /* 左右に分散配置 */
+      height: 64px; /* ヘッダーの高さ */
+    }
+
+    /* サイト名のスタイル（クリック可能なリンク風） */
+    .site-title {
+      font-family: "Noto Serif JP", "Yu Mincho", serif; /* 明朝体 */
+      font-size: 1.35rem; /* やや大きめの文字 */
+      font-weight: 700; /* 太字 */
+      color: #1a2742; /* 深い紺色 */
+      letter-spacing: 0.08em; /* 文字間隔を広げて上品に */
+      white-space: nowrap; /* 改行させない */
+      cursor: pointer; /* クリックできることを示すポインター */
+      text-decoration: none; /* 下線なし */
+      transition: color 0.2s ease; /* ホバー時のアニメーション */
+      user-select: none; /* テキスト選択を無効化 */
+    }
+
+    /* サイト名にカーソルを乗せた時 */
+    .site-title:hover {
+      color: #2b5ea7; /* 青みがかった色に変化 */
+    }
+
+    /* ナビゲーション（メニュー）のスタイル */
+    .nav {
+      display: flex; /* 横並び */
+      align-items: center; /* 縦中央揃え */
+      gap: 8px; /* ボタン間の隙間 */
+    }
+
+    /* ナビゲーションの各ボタン */
+    .nav-btn {
+      background: none; /* 背景なし */
+      border: none; /* 枠線なし */
+      color: #5a6577; /* 落ち着いたグレー */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.9rem; /* 文字サイズ */
+      padding: 8px 20px; /* 内側の余白 */
+      cursor: pointer; /* カーソルをポインターに */
+      border-radius: 6px; /* 角を丸く */
+      transition: all 0.2s ease; /* ホバー時のアニメーション */
+      font-weight: 500; /* やや太め */
+      letter-spacing: 0.04em; /* 少し文字間隔を広げる */
+    }
+
+    /* ナビゲーションボタンにカーソルを乗せた時 */
+    .nav-btn:hover {
+      background-color: #f0f3f8; /* うっすらグレーの背景 */
+      color: #1a2742; /* 文字を濃く */
+    }
+
+    /* 現在選択中のナビゲーションボタン */
+    .nav-btn.active {
+      background-color: #edf2fb; /* 薄い青の背景 */
+      color: #2b5ea7; /* 青い文字 */
+      font-weight: 600; /* より太い文字 */
+    }
+
+    /* ========================================
+       メインコンテンツ
+       ======================================== */
+
+    /* メインエリアの余白と最大幅（広めの余白で落ち着いた印象） */
+    .main {
+      max-width: 1100px; /* 最大幅 */
+      margin: 0 auto; /* 中央揃え */
+      padding: 40px 24px 60px; /* 上・左右・下の余白をゆったり */
+    }
+
+    /* ページ（ホーム・時間割）の表示切り替え */
+    .page {
+      display: none; /* デフォルトは非表示 */
+    }
+
+    /* 現在アクティブなページだけ表示 */
+    .page.active {
+      display: block; /* ブロック表示 */
+    }
+
+    /* ========================================
+       カード（白い角丸のボックス）
+       ======================================== */
+
+    .card {
+      background-color: #ffffff; /* 白い背景 */
+      border-radius: 14px; /* やや大きめの角丸 */
+      padding: 32px; /* ゆったりした内側の余白 */
+      margin-bottom: 28px; /* 下の余白を広めに */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02); /* ごく控えめな影 */
+      border: 1px solid #eaecf0; /* 薄いグレーの枠線 */
+    }
+
+    /* カード内の見出し（明朝体でアクセント） */
+    .card-title {
+      font-size: 1.1rem; /* やや大きめ */
+      font-weight: 600; /* 太字 */
+      color: #1a2742; /* 深い紺色 */
+      margin-bottom: 20px; /* 下の余白 */
+      padding-bottom: 14px; /* 下の内側余白 */
+      border-bottom: 1px solid #eaecf0; /* 薄い下線 */
+      letter-spacing: 0.04em; /* 文字間隔 */
+    }
+
+    /* ========================================
+       ホーム画面
+       ======================================== */
+
+    /* ウェルカムメッセージの見出し（明朝体で格調高く） */
+    .welcome h2 {
+      font-size: 1.6rem; /* 大きめの文字 */
+      font-weight: 600; /* 太字 */
+      color: #1a2742; /* 深い紺色 */
+      margin-bottom: 12px; /* 下の余白 */
+      letter-spacing: 0.06em; /* 文字間隔を広げて品よく */
+    }
+
+    /* ウェルカムメッセージの説明文 */
+    .welcome p {
+      color: #6b7a8d; /* 落ち着いたグレー */
+      font-size: 0.95rem; /* 標準サイズ */
+      line-height: 1.9; /* ゆとりある行間 */
+    }
+
+    /* 今日の時間割リスト */
+    .today-list {
+      list-style: none; /* リストマーカーを消す */
+    }
+
+    /* 今日の時間割の各授業 */
+    .today-item {
+      display: flex; /* 横並び */
+      align-items: center; /* 縦中央揃え */
+      padding: 16px 20px; /* ゆったりした内側余白 */
+      border-radius: 10px; /* 角丸 */
+      margin-bottom: 10px; /* 下の余白 */
+      background-color: #f8fafb; /* ごく薄い背景色 */
+      border-left: 3px solid #2b5ea7; /* 左側に青い線 */
+      transition: all 0.2s ease; /* アニメーション */
+    }
+
+    /* 最後のアイテムの下余白をなくす */
+    .today-item:last-child {
+      margin-bottom: 0; /* 最後のアイテムは余白なし */
+    }
+
+    /* 授業にカーソルを乗せた時 */
+    .today-item:hover {
+      background-color: #f0f4fa; /* 薄い青の背景 */
+    }
+
+    /* 時限の番号と時刻の表示エリア */
+    .today-period {
+      min-width: 100px; /* 最小幅を確保（時刻表示のため広めに） */
+      margin-right: 16px; /* 右側に余白 */
+    }
+
+    /* 時限の番号テキスト */
+    .today-period-num {
+      font-weight: 600; /* 太字 */
+      color: #2b5ea7; /* 青 */
+      font-size: 0.95rem; /* 標準サイズ */
+    }
+
+    /* 時限の時刻テキスト */
+    .today-period-time {
+      font-size: 0.78rem; /* 小さめ */
+      color: #8d99a8; /* 薄いグレー */
+      margin-top: 2px; /* 上に少し隙間 */
+      font-variant-numeric: tabular-nums; /* 数字の幅を揃える */
+    }
+
+    /* 授業の詳細情報 */
+    .today-detail {
+      flex: 1; /* 残りのスペースをすべて使う */
+    }
+
+    /* 科目名 */
+    .today-subject {
+      font-weight: 600; /* 太字 */
+      color: #23272f; /* 濃い色 */
+      font-size: 0.95rem; /* 標準サイズ */
+    }
+
+    /* 教室・教員の情報 */
+    .today-info {
+      font-size: 0.82rem; /* 小さめ */
+      color: #8d99a8; /* グレー */
+      margin-top: 3px; /* 上に少し隙間 */
+    }
+
+    /* 授業がない時のメッセージ */
+    .no-class {
+      text-align: center; /* 中央揃え */
+      color: #a3adb8; /* 薄いグレー */
+      padding: 40px 16px; /* ゆったりした余白 */
+      font-size: 0.95rem; /* 標準サイズ */
+      line-height: 1.8; /* 行間 */
+    }
+
+    /* ========================================
+       時間割ページ - 学期タブ
+       ======================================== */
+
+    /* タブの並び */
+    .semester-tabs {
+      display: flex; /* 横並び */
+      gap: 4px; /* タブ間の隙間 */
+      margin-bottom: 24px; /* 下の余白 */
+      background-color: #edf0f4; /* 薄い背景 */
+      border-radius: 10px; /* 角丸 */
+      padding: 4px; /* 内側余白 */
+      width: fit-content; /* 中身の幅に合わせる */
+    }
+
+    /* 各学期タブのボタン */
+    .semester-tab {
+      padding: 8px 28px; /* 内側余白 */
+      border: none; /* 枠線なし */
+      background: none; /* 背景なし */
+      cursor: pointer; /* ポインターカーソル */
+      border-radius: 8px; /* 角丸 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.9rem; /* 文字サイズ */
+      font-weight: 500; /* やや太め */
+      color: #6b7a8d; /* グレーの文字 */
+      transition: all 0.2s ease; /* アニメーション */
+      letter-spacing: 0.04em; /* 文字間隔 */
+    }
+
+    /* 選択中の学期タブ */
+    .semester-tab.active {
+      background-color: #ffffff; /* 白い背景 */
+      color: #1a2742; /* 濃い紺の文字 */
+      font-weight: 600; /* 太字 */
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); /* ほんのり影 */
+    }
+
+    /* ========================================
+       時間割テーブル
+       ======================================== */
+
+    /* テーブルを横スクロール可能にするラッパー */
+    .timetable-wrapper {
+      overflow-x: auto; /* 横にはみ出したらスクロール */
+      -webkit-overflow-scrolling: touch; /* スマホでなめらかスクロール */
+      border-radius: 14px; /* 角丸 */
+      border: 1px solid #e2e6ec; /* 薄い枠線 */
+    }
+
+    /* 時間割テーブル本体 */
+    .timetable {
+      width: 100%; /* 横幅いっぱい */
+      min-width: 720px; /* 最小幅（時刻列が広がったため少し拡大） */
+      border-collapse: collapse; /* セルの隙間をなくす */
+      table-layout: fixed; /* セル幅を均等に */
+    }
+
+    /* テーブルヘッダー（曜日の行） */
+    .timetable thead th {
+      background-color: #f6f8fb; /* ごく薄いグレーブルーの背景 */
+      color: #3d4a5c; /* 落ち着いた紺グレー */
+      padding: 14px 8px; /* ゆったりした余白 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-weight: 600; /* 太字 */
+      font-size: 0.88rem; /* やや小さめ */
+      text-align: center; /* 中央揃え */
+      border-bottom: 2px solid #e2e6ec; /* やや太い下線 */
+      border-right: 1px solid #eaecf0; /* 薄い仕切り線 */
+      letter-spacing: 0.06em; /* 文字間隔 */
+    }
+
+    /* ヘッダーの最後の列の右線を消す */
+    .timetable thead th:last-child {
+      border-right: none; /* 右端の枠線なし */
+    }
+
+    /* ヘッダーの最初のセル（「時限」のラベル） */
+    .timetable thead th:first-child {
+      width: 88px; /* 時刻表示のため幅を広めに */
+      font-size: 0.8rem; /* 小さめ */
+      color: #8d99a8; /* 薄いグレー */
+    }
+
+    /* 土曜日のヘッダー（控えめなデザイン） */
+    .timetable thead th.col-sat {
+      color: #a3adb8; /* さらに薄いグレー */
+    }
+
+    /* テーブルの各セル */
+    .timetable td {
+      border-right: 1px solid #eef0f4; /* ごく薄い仕切り線 */
+      border-bottom: 1px solid #eef0f4; /* ごく薄い下線 */
+      padding: 0; /* パディングなし（中のボタンが埋める） */
+      height: 88px; /* セルの高さ（余裕をもたせる） */
+      vertical-align: top; /* 上揃え */
+    }
+
+    /* 最後の列の右線を消す */
+    .timetable td:last-child {
+      border-right: none; /* 右端の枠線なし */
+    }
+
+    /* 時限番号と時刻のセル */
+    .timetable td.period-label {
+      background-color: #f9fafb; /* ごく薄い背景 */
+      text-align: center; /* 中央 */
+      vertical-align: middle; /* 縦中央 */
+      width: 88px; /* 幅を広めに固定 */
+      padding: 8px 4px; /* 内側余白 */
+      border-right: 1px solid #e2e6ec; /* 右側の仕切り線 */
+    }
+
+    /* 時限番号の文字 */
+    .period-num {
+      font-weight: 700; /* 太字 */
+      font-size: 0.88rem; /* やや小さめ */
+      color: #3d4a5c; /* 落ち着いたグレー */
+      display: block; /* ブロック表示 */
+    }
+
+    /* 時刻の文字 */
+    .period-time {
+      font-size: 0.68rem; /* とても小さめ */
+      color: #a3adb8; /* 薄いグレー */
+      margin-top: 2px; /* 上に少し隙間 */
+      display: block; /* ブロック表示 */
+      font-variant-numeric: tabular-nums; /* 数字の幅を揃える */
+      line-height: 1.3; /* 行間 */
+    }
+
+    /* 6限・7限の行（控えめなデザイン） */
+    .timetable tr.row-late td {
+      height: 72px; /* 少し低い高さ */
+    }
+
+    /* 6限・7限の通常セル内の文字を薄く */
+    .timetable tr.row-late td:not(.period-label) {
+      opacity: 0.55; /* 薄く表示 */
+    }
+
+    /* 6限・7限にカーソルを乗せた時は通常の濃さに */
+    .timetable tr.row-late:hover td:not(.period-label) {
+      opacity: 1; /* 通常に戻す */
+    }
+
+    /* 6限・7限の時限ラベル */
+    .timetable tr.row-late td.period-label .period-num {
+      color: #a3adb8; /* 薄いグレー */
+    }
+
+    /* 土曜日の列（控えめ） */
+    .timetable td.col-sat {
+      background-color: #fcfcfd; /* ほんのりグレーの背景 */
+    }
+
+    /* 各コマのクリック可能なボタン */
+    .cell-btn {
+      width: 100%; /* セルいっぱいの幅 */
+      height: 100%; /* セルいっぱいの高さ */
+      min-height: 88px; /* 最小の高さ */
+      border: none; /* 枠線なし */
+      background: none; /* 背景なし */
+      cursor: pointer; /* ポインターカーソル */
+      padding: 10px 10px; /* ゆとりある内側余白 */
+      text-align: left; /* 左揃え */
+      display: flex; /* 縦並びレイアウト */
+      flex-direction: column; /* 縦方向に並べる */
+      justify-content: center; /* 縦中央 */
+      transition: background-color 0.2s ease; /* アニメーション */
+      border-radius: 0; /* 角丸なし */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+    }
+
+    /* 6限・7限のセルボタンの高さ */
+    .row-late .cell-btn {
+      min-height: 72px; /* 少し低い */
+    }
+
+    /* 空のコマにカーソルを乗せた時 */
+    .cell-btn:hover {
+      background-color: #f5f7fa; /* ごく薄いグレー */
+    }
+
+    /* 授業が登録されているコマ */
+    .cell-btn.has-class {
+      background-color: #f0f5ff; /* 薄い青い背景 */
+      border-left: 3px solid #2b5ea7; /* 左側に青い線 */
+      padding-left: 8px; /* 左線の分だけパディング調整 */
+    }
+
+    /* 登録済みコマにカーソルを乗せた時 */
+    .cell-btn.has-class:hover {
+      background-color: #e6eefa; /* やや濃い青 */
+    }
+
+    /* 登録されている科目名の表示 */
+    .cell-subject {
+      font-size: 0.88rem; /* 読みやすいサイズに拡大 */
+      font-weight: 600; /* 太字 */
+      color: #1a2742; /* 深い紺色 */
+      line-height: 1.4; /* 行間 */
+      overflow: hidden; /* はみ出しを隠す */
+      text-overflow: ellipsis; /* はみ出し部分に「...」 */
+      display: -webkit-box; /* 複数行の省略表示用 */
+      -webkit-line-clamp: 2; /* 最大2行まで */
+      -webkit-box-orient: vertical; /* 縦方向にクランプ */
+    }
+
+    /* 登録されている教室の表示 */
+    .cell-room {
+      font-size: 0.75rem; /* 小さめ */
+      color: #8d99a8; /* グレー */
+      margin-top: 4px; /* 上に少し隙間 */
+    }
+
+    /* 空のコマの「＋」マーク */
+    .cell-empty {
+      color: #d3d9e2; /* 薄いグレー */
+      font-size: 1.1rem; /* やや大きめ */
+      text-align: center; /* 中央 */
+      width: 100%; /* 横幅いっぱい */
+    }
+
+    /* 空のコマにカーソルを乗せた時の「＋」マーク */
+    .cell-btn:hover .cell-empty {
+      color: #8daed4; /* 薄い青 */
+    }
+
+    /* ========================================
+       モーダル（入力フォーム）
+       ======================================== */
+
+    /* モーダルの背景オーバーレイ */
+    .modal-overlay {
+      display: none; /* デフォルト非表示 */
+      position: fixed; /* 画面に固定 */
+      inset: 0; /* 上下左右全体を覆う */
+      background-color: rgba(20, 30, 50, 0.4); /* 半透明の暗い背景 */
+      z-index: 200; /* 最前面に表示 */
+      align-items: center; /* 縦中央 */
+      justify-content: center; /* 横中央 */
+      padding: 16px; /* スマホ対策の余白 */
+      backdrop-filter: blur(2px); /* 背景をぼかす */
+    }
+
+    /* モーダルが表示されている時 */
+    .modal-overlay.show {
+      display: flex; /* flexで中央配置 */
+    }
+
+    /* モーダル本体（白い入力フォームの枠） */
+    .modal {
+      background-color: #ffffff; /* 白い背景 */
+      border-radius: 16px; /* 角丸 */
+      padding: 36px; /* ゆったりした内側余白 */
+      width: 100%; /* 幅いっぱい */
+      max-width: 440px; /* 最大幅 */
+      max-height: 90vh; /* 画面の90%まで */
+      overflow-y: auto; /* 溢れたらスクロール */
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12); /* 大きな影 */
+    }
+
+    /* モーダルのヘッダー（タイトルと閉じるボタン） */
+    .modal-header {
+      display: flex; /* 横並び */
+      justify-content: space-between; /* 両端に配置 */
+      align-items: center; /* 縦中央 */
+      margin-bottom: 28px; /* 下にゆとりある余白 */
+    }
+
+    /* モーダルのタイトル（明朝体） */
+    .modal-title {
+      font-size: 1.15rem; /* やや大きめ */
+      font-weight: 600; /* 太字 */
+      color: #1a2742; /* 深い紺 */
+      letter-spacing: 0.04em; /* 文字間隔 */
+    }
+
+    /* 閉じるボタン（×） */
+    .modal-close {
+      background: none; /* 背景なし */
+      border: none; /* 枠線なし */
+      font-size: 1.5rem; /* 大きめ */
+      color: #a3adb8; /* グレー */
+      cursor: pointer; /* ポインター */
+      padding: 4px 8px; /* 内側余白 */
+      border-radius: 6px; /* 角丸 */
+      line-height: 1; /* 行間 */
+      transition: all 0.2s; /* アニメーション */
+    }
+
+    /* 閉じるボタンにカーソルを乗せた時 */
+    .modal-close:hover {
+      background-color: #f3f5f7; /* 薄いグレー背景 */
+      color: #3d4a5c; /* 濃くする */
+    }
+
+    /* フォームの各入力グループ */
+    .form-group {
+      margin-bottom: 20px; /* 下にゆとりある余白 */
+    }
+
+    /* 入力欄のラベル */
+    .form-group label {
+      display: block; /* ブロック表示 */
+      font-size: 0.82rem; /* 小さめ */
+      font-weight: 600; /* 太字 */
+      color: #3d4a5c; /* 落ち着いたグレー */
+      margin-bottom: 8px; /* 下の余白 */
+      letter-spacing: 0.03em; /* 文字間隔 */
+    }
+
+    /* テキスト入力欄 */
+    .form-group input[type="text"],
+    .form-group select {
+      width: 100%; /* 横幅いっぱい */
+      padding: 11px 14px; /* ゆとりある内側余白 */
+      border: 1.5px solid #dde1e8; /* 薄いグレーの枠線 */
+      border-radius: 8px; /* 角丸 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.95rem; /* 文字サイズ */
+      color: #23272f; /* 文字色 */
+      transition: border-color 0.2s ease; /* アニメーション */
+      background-color: #ffffff; /* 白背景 */
+    }
+
+    /* 入力欄にフォーカスした時 */
+    .form-group input[type="text"]:focus,
+    .form-group select:focus {
+      outline: none; /* デフォルトの枠を消す */
+      border-color: #2b5ea7; /* 青い枠線 */
+      box-shadow: 0 0 0 3px rgba(43, 94, 167, 0.08); /* ごく薄い青の影 */
+    }
+
+    /* モーダル内のボタン群 */
+    .modal-actions {
+      display: flex; /* 横並び */
+      gap: 10px; /* ボタン間の隙間 */
+      margin-top: 32px; /* 上にゆとりある余白 */
+    }
+
+    /* 登録ボタン（青いメインボタン） */
+    .btn-primary {
+      flex: 1; /* 残りスペースをすべて使う */
+      padding: 11px 24px; /* ゆとりある内側余白 */
+      background-color: #2b5ea7; /* 落ち着いた青 */
+      color: #ffffff; /* 白い文字 */
+      border: none; /* 枠線なし */
+      border-radius: 8px; /* 角丸 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.93rem; /* 文字サイズ */
+      font-weight: 600; /* 太字 */
+      cursor: pointer; /* ポインター */
+      transition: background-color 0.2s ease; /* アニメーション */
+      letter-spacing: 0.03em; /* 文字間隔 */
+    }
+
+    /* 登録ボタンにカーソルを乗せた時 */
+    .btn-primary:hover {
+      background-color: #234d8c; /* やや濃い青 */
+    }
+
+    /* 削除ボタン（赤いボタン） */
+    .btn-danger {
+      padding: 11px 20px; /* 内側余白 */
+      background-color: #ffffff; /* 白い背景 */
+      color: #c53030; /* 赤い文字 */
+      border: 1.5px solid #fcd5d5; /* 薄い赤の枠線 */
+      border-radius: 8px; /* 角丸 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.93rem; /* 文字サイズ */
+      font-weight: 600; /* 太字 */
+      cursor: pointer; /* ポインター */
+      transition: all 0.2s ease; /* アニメーション */
+    }
+
+    /* 削除ボタンにカーソルを乗せた時 */
+    .btn-danger:hover {
+      background-color: #fff5f5; /* 薄い赤の背景 */
+      border-color: #f5a3a3; /* やや濃い赤枠 */
+    }
+
+    /* キャンセルボタン（グレーのボタン） */
+    .btn-secondary {
+      padding: 11px 20px; /* 内側余白 */
+      background-color: #f5f7f9; /* ごく薄いグレーの背景 */
+      color: #3d4a5c; /* 濃いグレーの文字 */
+      border: 1px solid #e2e6ec; /* グレーの枠線 */
+      border-radius: 8px; /* 角丸 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.93rem; /* 文字サイズ */
+      font-weight: 500; /* やや太め */
+      cursor: pointer; /* ポインター */
+      transition: background-color 0.2s ease; /* アニメーション */
+    }
+
+    /* キャンセルボタンにカーソルを乗せた時 */
+    .btn-secondary:hover {
+      background-color: #eaecf0; /* やや濃いグレー */
+    }
+
+    /* ========================================
+       レスポンシブ対応（スマホ向けの調整）
+       ======================================== */
+
+    /* 画面幅が768px以下（タブレット・スマホ）の場合 */
+    @media (max-width: 768px) {
+      /* ヘッダーの左右余白を縮小 */
+      .header {
+        padding: 0 16px; /* 余白を縮小 */
+      }
+
+      /* ヘッダー内の高さを調整 */
+      .header-inner {
+        height: 56px; /* やや低く */
+      }
+
+      /* サイト名の文字を少し小さく */
+      .site-title {
+        font-size: 1.15rem; /* 文字サイズ縮小 */
+      }
+
+      /* メインコンテンツの余白を縮小 */
+      .main {
+        padding: 24px 14px 40px; /* 余白を縮小 */
+      }
+
+      /* カードの余白を縮小 */
+      .card {
+        padding: 22px 18px; /* 余白を縮小 */
+        border-radius: 12px; /* 角丸を少し小さく */
+      }
+
+      /* モーダルの余白を縮小 */
+      .modal {
+        padding: 24px 20px; /* 余白を縮小 */
+      }
+
+      /* ウェルカムメッセージの文字を小さく */
+      .welcome h2 {
+        font-size: 1.3rem; /* 文字サイズ縮小 */
+      }
+
+      /* 今日の時間割の時限エリアを少し狭く */
+      .today-period {
+        min-width: 80px; /* 最小幅を縮小 */
+        margin-right: 12px; /* 右余白を縮小 */
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ========================================
+       ヘッダー部分
+       ======================================== -->
+  <header class="header">
+    <div class="header-inner">
+      <!-- サイト名（クリックでホームに戻る） -->
+      <div class="site-title" id="site-title" role="button" tabindex="0" aria-label="ホームに戻る">学内ポータル</div>
+      <!-- ナビゲーションメニュー（時間割のみ） -->
+      <nav class="nav">
+        <!-- 時間割ボタン -->
+        <button class="nav-btn" data-page="timetable">時間割</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========================================
+       メインコンテンツ
+       ======================================== -->
+  <main class="main">
+
+    <!-- ================================
+         ホーム画面
+         ================================ -->
+    <div id="page-home" class="page active">
+      <!-- ウェルカムメッセージのカード -->
+      <div class="card welcome">
+        <h2>ようこそ、学内ポータルへ</h2>
+        <p>授業の時間割を管理できます。上部の「時間割」から登録を始めましょう。</p>
+      </div>
+      <!-- 今日の時間割カード -->
+      <div class="card">
+        <div class="card-title">今日の時間割</div>
+        <!-- JavaScriptで今日の授業リストを挿入する場所 -->
+        <div id="today-classes"></div>
+      </div>
+    </div>
+
+    <!-- ================================
+         時間割ページ
+         ================================ -->
+    <div id="page-timetable" class="page">
+      <!-- 学期切り替えタブ -->
+      <div class="semester-tabs">
+        <!-- 前期タブ（初期状態でactive） -->
+        <button class="semester-tab active" data-semester="first">前期</button>
+        <!-- 後期タブ -->
+        <button class="semester-tab" data-semester="second">後期</button>
+      </div>
+      <!-- 時間割テーブルのカード -->
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="timetable-wrapper">
+          <!-- テーブル本体はJavaScriptで生成 -->
+          <table class="timetable" id="timetable"></table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================
+       モーダル（授業の入力フォーム）
+       ======================================== -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <!-- モーダルヘッダー -->
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title">授業を登録</div>
+        <!-- 閉じるボタン -->
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <!-- 入力フォーム -->
+      <form id="class-form">
+        <!-- 科目名の入力欄 -->
+        <div class="form-group">
+          <label for="input-subject">科目名</label>
+          <input type="text" id="input-subject" placeholder="例：線形代数学I" />
+        </div>
+        <!-- 担当教員の入力欄 -->
+        <div class="form-group">
+          <label for="input-teacher">担当教員</label>
+          <input type="text" id="input-teacher" placeholder="例：山田 太郎" />
+        </div>
+        <!-- 教室の入力欄 -->
+        <div class="form-group">
+          <label for="input-room">教室</label>
+          <input type="text" id="input-room" placeholder="例：A棟201" />
+        </div>
+        <!-- 単位数の選択欄 -->
+        <div class="form-group">
+          <label for="input-credits">単位数</label>
+          <select id="input-credits">
+            <option value="1">1単位</option>
+            <option value="2" selected>2単位</option>
+            <option value="3">3単位</option>
+            <option value="4">4単位</option>
+          </select>
+        </div>
+        <!-- ボタン群 -->
+        <div class="modal-actions">
+          <!-- 削除ボタン（編集時のみ表示） -->
+          <button type="button" class="btn-danger" id="btn-delete" style="display: none;">削除</button>
+          <!-- キャンセルボタン -->
+          <button type="button" class="btn-secondary" id="btn-cancel">キャンセル</button>
+          <!-- 登録ボタン -->
+          <button type="submit" class="btn-primary" id="btn-save">登録</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================
+       JavaScript
+       ======================================== -->
+  <script>
+    // ========================================
+    // 定数の定義
+    // ========================================
+
+    // 曜日の配列（テーブルのヘッダーに使用）
+    const DAYS = ["月", "火", "水", "木", "金", "土"];
+
+    // 曜日のキー（データ保存用、英語のキーを使う）
+    const DAY_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat"];
+
+    // 時限の数（1限〜7限）
+    const MAX_PERIODS = 7;
+
+    // 通常時限の数（6限以降は控えめ表示）
+    const REGULAR_PERIODS = 5;
+
+    // 各時限の開始時刻と終了時刻を定義
+    const PERIOD_TIMES = {
+      1: { start: "8:30",  end: "10:00" },  // 1限
+      2: { start: "10:15", end: "11:45" },  // 2限
+      3: { start: "12:30", end: "14:00" },  // 3限
+      4: { start: "14:15", end: "15:45" },  // 4限
+      5: { start: "16:00", end: "17:30" },  // 5限
+      6: { start: "18:00", end: "19:30" },  // 6限
+      7: { start: "19:40", end: "21:10" }   // 7限
+    };
+
+    // localStorageに保存する時のキー名
+    const STORAGE_KEY_FIRST = "portal_timetable_first";   // 前期のキー
+    const STORAGE_KEY_SECOND = "portal_timetable_second";  // 後期のキー
+
+    // JavaScriptのDate.getDay()で返る値と曜日キーの対応
+    // getDay()は 0=日, 1=月, 2=火, 3=水, 4=木, 5=金, 6=土
+    const JS_DAY_TO_KEY = {
+      0: null,    // 日曜 → 時間割なし
+      1: "mon",   // 月曜
+      2: "tue",   // 火曜
+      3: "wed",   // 水曜
+      4: "thu",   // 木曜
+      5: "fri",   // 金曜
+      6: "sat"    // 土曜
+    };
+
+    // ========================================
+    // 状態管理の変数
+    // ========================================
+
+    // 現在選択中の学期（"first" = 前期, "second" = 後期）
+    let currentSemester = "first";
+
+    // 現在モーダルで編集中のコマの情報
+    let editingCell = null; // { dayIndex: 0-5, period: 1-7 }
+
+    // ========================================
+    // localStorageからデータを読み込む関数
+    // ========================================
+    function loadTimetable(semester) {
+      // 学期に応じたキーを選ぶ
+      const key = semester === "first" ? STORAGE_KEY_FIRST : STORAGE_KEY_SECOND;
+
+      // localStorageからJSON文字列を取得
+      const data = localStorage.getItem(key);
+
+      // データがあればJSONをオブジェクトに変換して返す、なければ空オブジェクトを返す
+      return data ? JSON.parse(data) : {};
+    }
+
+    // ========================================
+    // localStorageにデータを保存する関数
+    // ========================================
+    function saveTimetable(semester, data) {
+      // 学期に応じたキーを選ぶ
+      const key = semester === "first" ? STORAGE_KEY_FIRST : STORAGE_KEY_SECOND;
+
+      // オブジェクトをJSON文字列に変換して保存
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+
+    // ========================================
+    // 特定のコマのデータを取得する関数
+    // ========================================
+    function getCellData(semester, dayIndex, period) {
+      // 学期の全データを読み込む
+      const data = loadTimetable(semester);
+
+      // "mon_1" のようなキーを作成（例：月曜1限）
+      const cellKey = DAY_KEYS[dayIndex] + "_" + period;
+
+      // そのコマのデータを返す（なければundefined）
+      return data[cellKey];
+    }
+
+    // ========================================
+    // 特定のコマにデータを保存する関数
+    // ========================================
+    function setCellData(semester, dayIndex, period, classInfo) {
+      // 学期の全データを読み込む
+      const data = loadTimetable(semester);
+
+      // "mon_1" のようなキーを作成
+      const cellKey = DAY_KEYS[dayIndex] + "_" + period;
+
+      // データをセット
+      data[cellKey] = classInfo;
+
+      // 保存
+      saveTimetable(semester, data);
+    }
+
+    // ========================================
+    // 特定のコマのデータを削除する関数
+    // ========================================
+    function deleteCellData(semester, dayIndex, period) {
+      // 学期の全データを読み込む
+      const data = loadTimetable(semester);
+
+      // "mon_1" のようなキーを作成
+      const cellKey = DAY_KEYS[dayIndex] + "_" + period;
+
+      // そのキーを削除
+      delete data[cellKey];
+
+      // 保存
+      saveTimetable(semester, data);
+    }
+
+    // ========================================
+    // 時限の時刻文字列を取得するヘルパー関数
+    // ========================================
+    function getPeriodTimeStr(period) {
+      // PERIOD_TIMESから該当時限のデータを取得
+      const t = PERIOD_TIMES[period];
+
+      // 「8:30〜10:00」の形式で返す
+      return t.start + "〜" + t.end;
+    }
+
+    // ========================================
+    // 時間割テーブルを生成・描画する関数
+    // ========================================
+    function renderTimetable() {
+      // テーブル要素を取得
+      const table = document.getElementById("timetable");
+
+      // テーブルの中身を空にする（再描画のため）
+      table.innerHTML = "";
+
+      // --- ヘッダー行（曜日）を作成 ---
+      const thead = document.createElement("thead"); // thead要素を作成
+      const headerRow = document.createElement("tr"); // 行を作成
+
+      // 最初のセル（「時限」のラベル）
+      const thCorner = document.createElement("th");
+      thCorner.textContent = "時限"; // テキストを設定
+      headerRow.appendChild(thCorner); // 行に追加
+
+      // 各曜日のヘッダーセルを作成
+      DAYS.forEach(function (day, index) {
+        const th = document.createElement("th"); // セルを作成
+        th.textContent = day; // 曜日名をセット
+        // 土曜日には控えめスタイルのクラスを追加
+        if (index === 5) {
+          th.classList.add("col-sat");
+        }
+        headerRow.appendChild(th); // 行に追加
+      });
+
+      thead.appendChild(headerRow); // ヘッダー行をtheadに追加
+      table.appendChild(thead); // theadをテーブルに追加
+
+      // --- ボディ（各時限の行）を作成 ---
+      const tbody = document.createElement("tbody");
+
+      // 1限〜7限まで繰り返す
+      for (let period = 1; period <= MAX_PERIODS; period++) {
+        const row = document.createElement("tr"); // 行を作成
+
+        // 6限・7限は控えめ表示にするクラスを追加
+        if (period > REGULAR_PERIODS) {
+          row.classList.add("row-late");
+        }
+
+        // 時限番号と時刻のセル
+        const tdPeriod = document.createElement("td");
+        tdPeriod.classList.add("period-label"); // スタイル用クラス
+
+        // 時限番号を表示するspan
+        const numSpan = document.createElement("span");
+        numSpan.classList.add("period-num"); // 番号用スタイル
+        numSpan.textContent = period + "限"; // 「1限」「2限」...
+
+        // 時刻を表示するspan
+        const timeSpan = document.createElement("span");
+        timeSpan.classList.add("period-time"); // 時刻用スタイル
+        timeSpan.textContent = getPeriodTimeStr(period); // 「8:30〜10:00」
+
+        tdPeriod.appendChild(numSpan); // 番号を追加
+        tdPeriod.appendChild(timeSpan); // 時刻を追加
+        row.appendChild(tdPeriod); // セルを行に追加
+
+        // 各曜日のセルを作成
+        DAYS.forEach(function (day, dayIndex) {
+          const td = document.createElement("td"); // セルを作成
+
+          // 土曜日には控えめスタイルのクラスを追加
+          if (dayIndex === 5) {
+            td.classList.add("col-sat");
+          }
+
+          // クリック可能なボタンを作成
+          const btn = document.createElement("button");
+          btn.classList.add("cell-btn"); // スタイル用クラス
+          btn.type = "button"; // フォーム送信を防ぐ
+
+          // このコマのデータを取得
+          const cellData = getCellData(currentSemester, dayIndex, period);
+
+          if (cellData) {
+            // 授業が登録されている場合
+            btn.classList.add("has-class"); // 登録済みスタイルを適用
+
+            // 科目名を表示
+            const subjectSpan = document.createElement("span");
+            subjectSpan.classList.add("cell-subject"); // 科目名スタイル
+            subjectSpan.textContent = cellData.subject; // 科目名テキスト
+            btn.appendChild(subjectSpan);
+
+            // 教室名があれば表示
+            if (cellData.room) {
+              const roomSpan = document.createElement("span");
+              roomSpan.classList.add("cell-room"); // 教室名スタイル
+              roomSpan.textContent = cellData.room; // 教室名テキスト
+              btn.appendChild(roomSpan);
+            }
+          } else {
+            // 授業が登録されていない場合は「＋」を表示
+            const emptySpan = document.createElement("span");
+            emptySpan.classList.add("cell-empty"); // 空セルスタイル
+            emptySpan.textContent = "+"; // プラス記号
+            btn.appendChild(emptySpan);
+          }
+
+          // ボタンをクリックした時にモーダルを開く
+          btn.addEventListener("click", function () {
+            openModal(dayIndex, period); // 曜日と時限を渡す
+          });
+
+          td.appendChild(btn); // ボタンをセルに追加
+          row.appendChild(td); // セルを行に追加
+        });
+
+        tbody.appendChild(row); // 行をtbodyに追加
+      }
+
+      table.appendChild(tbody); // tbodyをテーブルに追加
+    }
+
+    // ========================================
+    // 今日の時間割を表示する関数（ホーム画面用）
+    // ========================================
+    function renderTodayClasses() {
+      // 表示先の要素を取得
+      const container = document.getElementById("today-classes");
+
+      // 今日の曜日を取得（JavaScriptのgetDay()を使用）
+      const today = new Date();
+      const todayKey = JS_DAY_TO_KEY[today.getDay()];
+
+      // 日曜日の場合は授業なし
+      if (!todayKey) {
+        container.innerHTML = '<div class="no-class">今日は日曜日です。授業はありません。</div>';
+        return; // 処理を終了
+      }
+
+      // todayKeyに対応する曜日のインデックスを取得
+      const dayIndex = DAY_KEYS.indexOf(todayKey);
+
+      // 今日の曜日名を取得（表示用）
+      const dayName = DAYS[dayIndex];
+
+      // 現在選択中の学期のデータを読み込む
+      const data = loadTimetable(currentSemester);
+
+      // 今日の授業を格納する配列
+      const todayItems = [];
+
+      // 1限〜7限まで確認
+      for (let period = 1; period <= MAX_PERIODS; period++) {
+        // "mon_1" のようなキーを生成
+        const cellKey = todayKey + "_" + period;
+        // データがあれば配列に追加
+        if (data[cellKey]) {
+          todayItems.push({
+            period: period, // 時限番号
+            data: data[cellKey] // 授業データ
+          });
+        }
+      }
+
+      // 授業がない場合
+      if (todayItems.length === 0) {
+        container.innerHTML = '<div class="no-class">今日（' + dayName + '曜日）の授業はありません。</div>';
+        return; // 処理を終了
+      }
+
+      // 授業リストを作成
+      let html = '<ul class="today-list">';
+
+      todayItems.forEach(function (item) {
+        // 各授業のリストアイテムを作成
+        html += '<li class="today-item">';
+
+        // 時限番号と時刻の表示エリア
+        html += '<div class="today-period">';
+        html += '<div class="today-period-num">' + item.period + '限</div>'; // 時限番号
+        html += '<div class="today-period-time">' + getPeriodTimeStr(item.period) + '</div>'; // 時刻
+        html += '</div>';
+
+        // 授業の詳細
+        html += '<div class="today-detail">';
+        // 科目名（XSS対策でエスケープ）
+        html += '<div class="today-subject">' + escapeHtml(item.data.subject) + '</div>';
+        // 教室と教員の情報
+        const infoParts = []; // 情報パーツを格納する配列
+        if (item.data.room) infoParts.push(item.data.room); // 教室名
+        if (item.data.teacher) infoParts.push(item.data.teacher); // 教員名
+        if (infoParts.length > 0) {
+          html += '<div class="today-info">' + escapeHtml(infoParts.join(" / ")) + '</div>';
+        }
+        html += '</div>';
+        html += '</li>';
+      });
+
+      html += '</ul>';
+
+      // HTMLを表示先に挿入
+      container.innerHTML = html;
+    }
+
+    // ========================================
+    // HTMLエスケープ関数（XSS対策）
+    // ========================================
+    function escapeHtml(text) {
+      // テキスト内の特殊文字をHTMLエンティティに変換して安全に表示する
+      const div = document.createElement("div"); // 一時的なdivを作成
+      div.appendChild(document.createTextNode(text)); // テキストノードとして追加
+      return div.innerHTML; // エスケープされたHTMLを返す
+    }
+
+    // ========================================
+    // モーダルを開く関数
+    // ========================================
+    function openModal(dayIndex, period) {
+      // 編集中のコマ情報を記録
+      editingCell = { dayIndex: dayIndex, period: period };
+
+      // 曜日と時限の表示名を作成
+      const dayName = DAYS[dayIndex];
+      const semesterName = currentSemester === "first" ? "前期" : "後期";
+
+      // このコマの既存データを取得
+      const existing = getCellData(currentSemester, dayIndex, period);
+
+      if (existing) {
+        // 既に授業が登録されている場合（編集モード）
+        document.getElementById("modal-title").textContent =
+          semesterName + " " + dayName + "曜 " + period + "限 を編集";
+        // フォームに既存データを入力
+        document.getElementById("input-subject").value = existing.subject || ""; // 科目名
+        document.getElementById("input-teacher").value = existing.teacher || ""; // 教員名
+        document.getElementById("input-room").value = existing.room || ""; // 教室
+        document.getElementById("input-credits").value = existing.credits || "2"; // 単位数
+        // 削除ボタンを表示
+        document.getElementById("btn-delete").style.display = "block";
+        // 登録ボタンのテキストを「更新」に変更
+        document.getElementById("btn-save").textContent = "更新";
+      } else {
+        // 新規登録の場合
+        document.getElementById("modal-title").textContent =
+          semesterName + " " + dayName + "曜 " + period + "限 を登録";
+        // フォームを空にする
+        document.getElementById("input-subject").value = ""; // 空
+        document.getElementById("input-teacher").value = ""; // 空
+        document.getElementById("input-room").value = ""; // 空
+        document.getElementById("input-credits").value = "2"; // デフォルトは2単位
+        // 削除ボタンを非表示
+        document.getElementById("btn-delete").style.display = "none";
+        // 登録ボタンのテキストを「登録」に
+        document.getElementById("btn-save").textContent = "登録";
+      }
+
+      // モーダルを表示
+      document.getElementById("modal-overlay").classList.add("show");
+
+      // 科目名の入力欄にフォーカスを当てる（少し遅延させる）
+      setTimeout(function () {
+        document.getElementById("input-subject").focus();
+      }, 100);
+    }
+
+    // ========================================
+    // モーダルを閉じる関数
+    // ========================================
+    function closeModal() {
+      // モーダルを非表示にする
+      document.getElementById("modal-overlay").classList.remove("show");
+      // 編集中の情報をリセット
+      editingCell = null;
+    }
+
+    // ========================================
+    // 授業データを保存する関数（フォーム送信時）
+    // ========================================
+    function saveClass() {
+      // 科目名を取得（前後の空白を削除）
+      const subject = document.getElementById("input-subject").value.trim();
+
+      // 科目名が空なら保存しない
+      if (!subject) {
+        // 科目名の入力欄にフォーカスを戻す
+        document.getElementById("input-subject").focus();
+        return; // 処理中断
+      }
+
+      // 各入力欄の値をオブジェクトにまとめる
+      const classInfo = {
+        subject: subject, // 科目名
+        teacher: document.getElementById("input-teacher").value.trim(), // 教員名
+        room: document.getElementById("input-room").value.trim(), // 教室
+        credits: document.getElementById("input-credits").value // 単位数
+      };
+
+      // データを保存
+      setCellData(
+        currentSemester,     // 現在の学期
+        editingCell.dayIndex, // 曜日
+        editingCell.period,   // 時限
+        classInfo             // 授業データ
+      );
+
+      // モーダルを閉じる
+      closeModal();
+
+      // テーブルを再描画して更新を反映
+      renderTimetable();
+
+      // ホーム画面の今日の時間割も更新
+      renderTodayClasses();
+    }
+
+    // ========================================
+    // 授業データを削除する関数
+    // ========================================
+    function deleteClass() {
+      // 確認ダイアログを表示
+      if (!confirm("この授業を削除しますか？")) {
+        return; // キャンセルされたら何もしない
+      }
+
+      // データを削除
+      deleteCellData(
+        currentSemester,     // 現在の学期
+        editingCell.dayIndex, // 曜日
+        editingCell.period    // 時限
+      );
+
+      // モーダルを閉じる
+      closeModal();
+
+      // テーブルを再描画
+      renderTimetable();
+
+      // ホーム画面の今日の時間割も更新
+      renderTodayClasses();
+    }
+
+    // ========================================
+    // ページ切り替え関数
+    // ========================================
+    function switchPage(pageName) {
+      // すべてのページを非表示にする
+      document.querySelectorAll(".page").forEach(function (page) {
+        page.classList.remove("active");
+      });
+
+      // 指定されたページを表示する
+      document.getElementById("page-" + pageName).classList.add("active");
+
+      // すべてのナビゲーションボタンのactiveを外す
+      document.querySelectorAll(".nav-btn").forEach(function (btn) {
+        btn.classList.remove("active");
+      });
+
+      // 時間割ページに切り替えた場合はボタンをactiveにしテーブルを再描画
+      if (pageName === "timetable") {
+        // 時間割ボタンにactiveクラスを追加
+        var timetableBtn = document.querySelector('.nav-btn[data-page="timetable"]');
+        if (timetableBtn) timetableBtn.classList.add("active");
+        renderTimetable(); // テーブル再描画
+      }
+
+      // ホームに切り替えた場合は今日の時間割を更新
+      if (pageName === "home") {
+        renderTodayClasses();
+      }
+    }
+
+    // ========================================
+    // 学期タブ切り替え関数
+    // ========================================
+    function switchSemester(semester) {
+      // 現在の学期を更新
+      currentSemester = semester;
+
+      // すべてのタブのactiveを外す
+      document.querySelectorAll(".semester-tab").forEach(function (tab) {
+        tab.classList.remove("active");
+      });
+
+      // クリックされたタブにactiveを追加
+      document.querySelector('.semester-tab[data-semester="' + semester + '"]').classList.add("active");
+
+      // テーブルを再描画
+      renderTimetable();
+
+      // ホーム画面の今日の時間割も更新（学期が変わると表示が変わる）
+      renderTodayClasses();
+    }
+
+    // ========================================
+    // イベントリスナーの登録（ボタンのクリック処理）
+    // ========================================
+
+    // --- サイト名クリックでホームに戻る ---
+    document.getElementById("site-title").addEventListener("click", function () {
+      switchPage("home"); // ホーム画面に切り替え
+    });
+
+    // --- サイト名のEnterキーでもホームに戻る（アクセシビリティ対応） ---
+    document.getElementById("site-title").addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault(); // デフォルト動作を防ぐ
+        switchPage("home"); // ホーム画面に切り替え
+      }
+    });
+
+    // --- ナビゲーションボタンのクリック ---
+    document.querySelectorAll(".nav-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        // data-page属性の値を取得してページ切り替え
+        switchPage(this.getAttribute("data-page"));
+      });
+    });
+
+    // --- 学期タブのクリック ---
+    document.querySelectorAll(".semester-tab").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        // data-semester属性の値（"first" または "second"）を取得して学期切り替え
+        switchSemester(this.getAttribute("data-semester"));
+      });
+    });
+
+    // --- モーダルの閉じるボタン ---
+    document.getElementById("modal-close").addEventListener("click", closeModal);
+
+    // --- モーダルのキャンセルボタン ---
+    document.getElementById("btn-cancel").addEventListener("click", closeModal);
+
+    // --- モーダルの背景クリックで閉じる ---
+    document.getElementById("modal-overlay").addEventListener("click", function (e) {
+      // クリックされた要素がオーバーレイ自身の場合のみ閉じる（モーダル内クリックは無視）
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    // --- Escapeキーでモーダルを閉じる ---
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeModal(); // モーダルを閉じる
+      }
+    });
+
+    // --- フォーム送信時（登録ボタン） ---
+    document.getElementById("class-form").addEventListener("submit", function (e) {
+      e.preventDefault(); // ページのリロードを防ぐ
+      saveClass(); // 保存処理を実行
+    });
+
+    // --- 削除ボタン ---
+    document.getElementById("btn-delete").addEventListener("click", deleteClass);
+
+    // ========================================
+    // 初期表示
+    // ========================================
+
+    // ページ読み込み時に今日の時間割を表示
+    renderTodayClasses();
+
+    // 時間割テーブルを初期描画
+    renderTimetable();
+  </script>
+</body>
+</html>
