@@ -28,7 +28,7 @@
     /* ページ全体のフォントと背景色を設定（本文はゴシック体） */
     body {
       font-family: "Noto Sans JP", "Hiragino Sans", "Meiryo", sans-serif; /* 読みやすいゴシック体 */
-      background-color: #f6f8fb; /* ごく薄いグレーブルーの背景 */
+      background-color: #f0f2f7; /* 上品なグレーブルーの背景 */
       color: #23272f; /* 濃い墨色の文字 */
       line-height: 1.8; /* 行間をゆったりと */
       min-height: 100vh; /* 画面の高さいっぱいに */
@@ -46,14 +46,28 @@
        ヘッダー
        ======================================== */
 
-    /* ヘッダー全体のスタイル（白ベースで上品に） */
+    /* ヘッダー全体のスタイル（白ベース＋下部にグラデーションライン） */
     .header {
-      background-color: #ffffff; /* 白い背景 */
+      background-color: rgba(255, 255, 255, 0.92); /* 半透明の白い背景 */
+      backdrop-filter: blur(12px); /* 背景をぼかしてすりガラス効果 */
+      -webkit-backdrop-filter: blur(12px); /* Safari対応 */
       padding: 0 32px; /* 左右にゆとりある余白 */
       position: sticky; /* スクロールしても上部に固定 */
       top: 0; /* 最上部に固定 */
       z-index: 100; /* 他の要素より手前に表示 */
-      border-bottom: 1px solid #e8ecf1; /* 下に細い線 */
+      border-bottom: none; /* 通常の線は消す */
+    }
+
+    /* ヘッダー下部にグラデーションラインを表示 */
+    .header::after {
+      content: ""; /* 疑似要素でラインを作成 */
+      position: absolute; /* ヘッダーに対して絶対配置 */
+      bottom: 0; /* 下端に配置 */
+      left: 0; /* 左端から */
+      right: 0; /* 右端まで */
+      height: 2px; /* ラインの太さ */
+      background: linear-gradient(90deg, #2b5ea7 0%, #6b9de8 40%, #a8c8f0 70%, #e2e6ec 100%); /* 青から薄いグレーへのグラデーション */
+      opacity: 0.6; /* やや透明にして控えめに */
     }
 
     /* ヘッダー内のレイアウト（横並び） */
@@ -63,7 +77,7 @@
       display: flex; /* 横並びレイアウト */
       align-items: center; /* 縦方向の中央揃え */
       justify-content: space-between; /* 左右に分散配置 */
-      height: 64px; /* ヘッダーの高さ */
+      height: 68px; /* ヘッダーの高さ（少しゆとり） */
     }
 
     /* サイト名のスタイル（クリック可能なリンク風） */
@@ -72,52 +86,54 @@
       font-size: 1.35rem; /* やや大きめの文字 */
       font-weight: 700; /* 太字 */
       color: #1a2742; /* 深い紺色 */
-      letter-spacing: 0.08em; /* 文字間隔を広げて上品に */
+      letter-spacing: 0.1em; /* 文字間隔を広げて上品に */
       white-space: nowrap; /* 改行させない */
       cursor: pointer; /* クリックできることを示すポインター */
       text-decoration: none; /* 下線なし */
-      transition: color 0.2s ease; /* ホバー時のアニメーション */
+      transition: color 0.3s ease; /* ホバー時のアニメーション */
       user-select: none; /* テキスト選択を無効化 */
     }
 
     /* サイト名にカーソルを乗せた時 */
     .site-title:hover {
-      color: #2b5ea7; /* 青みがかった色に変化 */
+      color: #3d7bd9; /* 明るい青に変化 */
     }
 
     /* ナビゲーション（メニュー）のスタイル */
     .nav {
       display: flex; /* 横並び */
       align-items: center; /* 縦中央揃え */
-      gap: 4px; /* ボタン間の隙間 */
+      gap: 6px; /* ボタン間の隙間 */
     }
 
     /* ナビゲーションの各ボタン */
     .nav-btn {
       background: none; /* 背景なし */
       border: none; /* 枠線なし */
-      color: #5a6577; /* 落ち着いたグレー */
+      color: #6b7a8d; /* 落ち着いたグレー */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
-      font-size: 0.9rem; /* 文字サイズ */
-      padding: 8px 18px; /* 内側の余白 */
+      font-size: 0.88rem; /* 文字サイズ */
+      padding: 8px 20px; /* 内側の余白 */
       cursor: pointer; /* カーソルをポインターに */
-      border-radius: 6px; /* 角を丸く */
-      transition: all 0.2s ease; /* ホバー時のアニメーション */
+      border-radius: 20px; /* 丸みのあるピル型 */
+      transition: all 0.25s ease; /* ホバー時のアニメーション */
       font-weight: 500; /* やや太め */
-      letter-spacing: 0.04em; /* 少し文字間隔を広げる */
+      letter-spacing: 0.05em; /* 少し文字間隔を広げる */
+      position: relative; /* 疑似要素の基準位置 */
     }
 
     /* ナビゲーションボタンにカーソルを乗せた時 */
     .nav-btn:hover {
-      background-color: #f0f3f8; /* うっすらグレーの背景 */
-      color: #1a2742; /* 文字を濃く */
+      background-color: rgba(43, 94, 167, 0.06); /* うっすら青い背景 */
+      color: #2b5ea7; /* 青い文字 */
     }
 
     /* 現在選択中のナビゲーションボタン */
     .nav-btn.active {
-      background-color: #edf2fb; /* 薄い青の背景 */
-      color: #2b5ea7; /* 青い文字 */
+      background-color: #1a2742; /* 濃い紺の背景 */
+      color: #ffffff; /* 白い文字 */
       font-weight: 600; /* より太い文字 */
+      box-shadow: 0 2px 8px rgba(26, 39, 66, 0.2); /* 浮き上がる影 */
     }
 
     /* ========================================
@@ -128,17 +144,24 @@
     .main {
       max-width: 1100px; /* 最大幅 */
       margin: 0 auto; /* 中央揃え */
-      padding: 40px 24px 60px; /* 上・左右・下の余白をゆったり */
+      padding: 44px 24px 80px; /* 上・左右・下の余白をゆったり */
     }
 
     /* ページ（ホーム・時間割・掲示板）の表示切り替え */
     .page {
       display: none; /* デフォルトは非表示 */
+      animation: fadeIn 0.35s ease; /* ページ切り替え時のフェードインアニメーション */
     }
 
     /* 現在アクティブなページだけ表示 */
     .page.active {
       display: block; /* ブロック表示 */
+    }
+
+    /* フェードインアニメーションの定義 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); } /* 最初は透明で少し下に */
+      to { opacity: 1; transform: translateY(0); } /* 最後は完全表示で元の位置に */
     }
 
     /* ========================================
@@ -147,42 +170,98 @@
 
     .card {
       background-color: #ffffff; /* 白い背景 */
-      border-radius: 14px; /* やや大きめの角丸 */
-      padding: 32px; /* ゆったりした内側の余白 */
+      border-radius: 16px; /* やや大きめの角丸 */
+      padding: 36px; /* ゆったりした内側の余白 */
       margin-bottom: 28px; /* 下の余白を広めに */
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02); /* ごく控えめな影 */
-      border: 1px solid #eaecf0; /* 薄いグレーの枠線 */
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03); /* やわらかい影 */
+      border: 1px solid rgba(234, 236, 240, 0.8); /* 半透明の枠線 */
+      transition: box-shadow 0.3s ease, transform 0.3s ease; /* ホバー時のアニメーション */
+    }
+
+    /* カードにカーソルを乗せた時 */
+    .card:hover {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06); /* 影を深く */
+      transform: translateY(-1px); /* ほんの少し浮く */
     }
 
     /* カード内の見出し（明朝体でアクセント） */
     .card-title {
-      font-size: 1.1rem; /* やや大きめ */
+      font-size: 1.05rem; /* やや大きめ */
       font-weight: 600; /* 太字 */
       color: #1a2742; /* 深い紺色 */
-      margin-bottom: 20px; /* 下の余白 */
-      padding-bottom: 14px; /* 下の内側余白 */
-      border-bottom: 1px solid #eaecf0; /* 薄い下線 */
-      letter-spacing: 0.04em; /* 文字間隔 */
+      margin-bottom: 24px; /* 下の余白 */
+      padding-bottom: 16px; /* 下の内側余白 */
+      border-bottom: none; /* 通常の下線は消す */
+      letter-spacing: 0.05em; /* 文字間隔 */
+      position: relative; /* 疑似要素の基準位置 */
+    }
+
+    /* カード見出しの下にグラデーションラインを追加 */
+    .card-title::after {
+      content: ""; /* 疑似要素で装飾ライン */
+      position: absolute; /* 絶対配置 */
+      bottom: 0; /* 下端に */
+      left: 0; /* 左端から */
+      width: 40px; /* 短いアクセントライン */
+      height: 2px; /* 線の太さ */
+      background: linear-gradient(90deg, #2b5ea7, #6b9de8); /* 青のグラデーション */
+      border-radius: 1px; /* 端を丸く */
     }
 
     /* ========================================
        ホーム画面
        ======================================== */
 
+    /* ウェルカムカードに特別な背景装飾 */
+    .welcome {
+      position: relative; /* 疑似要素の基準位置 */
+      overflow: hidden; /* はみ出しを隠す */
+      border: none; /* 枠線なし */
+      background: linear-gradient(135deg, #ffffff 0%, #f0f4fb 100%); /* 白から薄青へのグラデーション */
+    }
+
+    /* ウェルカムカードの右上に装飾的な円を配置 */
+    .welcome::before {
+      content: ""; /* 疑似要素で装飾 */
+      position: absolute; /* 絶対配置 */
+      top: -60px; /* 上にはみ出す */
+      right: -60px; /* 右にはみ出す */
+      width: 200px; /* 円の幅 */
+      height: 200px; /* 円の高さ */
+      border-radius: 50%; /* 円形に */
+      background: linear-gradient(135deg, rgba(43, 94, 167, 0.06), rgba(107, 157, 232, 0.04)); /* 薄い青のグラデーション */
+    }
+
+    /* ウェルカムカードの左下にも装飾的な円を配置 */
+    .welcome::after {
+      content: ""; /* 疑似要素で装飾 */
+      position: absolute; /* 絶対配置 */
+      bottom: -40px; /* 下にはみ出す */
+      left: -40px; /* 左にはみ出す */
+      width: 140px; /* 円の幅 */
+      height: 140px; /* 円の高さ */
+      border-radius: 50%; /* 円形に */
+      background: rgba(43, 94, 167, 0.03); /* ごく薄い青 */
+    }
+
     /* ウェルカムメッセージの見出し（明朝体で格調高く） */
     .welcome h2 {
-      font-size: 1.6rem; /* 大きめの文字 */
+      font-size: 1.65rem; /* 大きめの文字 */
       font-weight: 600; /* 太字 */
       color: #1a2742; /* 深い紺色 */
       margin-bottom: 12px; /* 下の余白 */
-      letter-spacing: 0.06em; /* 文字間隔を広げて品よく */
+      letter-spacing: 0.08em; /* 文字間隔を広げて品よく */
+      position: relative; /* 疑似要素の上に表示 */
+      z-index: 1; /* 装飾の上に */
     }
 
     /* ウェルカムメッセージの説明文 */
     .welcome p {
       color: #6b7a8d; /* 落ち着いたグレー */
-      font-size: 0.95rem; /* 標準サイズ */
-      line-height: 1.9; /* ゆとりある行間 */
+      font-size: 0.93rem; /* 標準サイズ */
+      line-height: 2; /* ゆとりある行間 */
+      position: relative; /* 疑似要素の上に表示 */
+      z-index: 1; /* 装飾の上に */
     }
 
     /* 今日の時間割リスト */
@@ -194,12 +273,12 @@
     .today-item {
       display: flex; /* 横並び */
       align-items: center; /* 縦中央揃え */
-      padding: 16px 20px; /* ゆったりした内側余白 */
-      border-radius: 10px; /* 角丸 */
+      padding: 18px 22px; /* ゆったりした内側余白 */
+      border-radius: 12px; /* 角丸 */
       margin-bottom: 10px; /* 下の余白 */
-      background-color: #f8fafb; /* ごく薄い背景色 */
+      background-color: #f8f9fc; /* ごく薄い背景色 */
       border-left: 3px solid #2b5ea7; /* 左側に青い線 */
-      transition: all 0.2s ease; /* アニメーション */
+      transition: all 0.25s ease; /* アニメーション */
     }
 
     /* 最後のアイテムの下余白をなくす */
@@ -209,27 +288,29 @@
 
     /* 授業にカーソルを乗せた時 */
     .today-item:hover {
-      background-color: #f0f4fa; /* 薄い青の背景 */
+      background-color: #edf2fb; /* 薄い青の背景 */
+      transform: translateX(4px); /* 右にスライド */
+      box-shadow: 0 2px 8px rgba(43, 94, 167, 0.06); /* 薄い影 */
     }
 
     /* 時限の番号と時刻の表示エリア */
     .today-period {
-      min-width: 100px; /* 最小幅を確保（時刻表示のため広めに） */
-      margin-right: 16px; /* 右側に余白 */
+      min-width: 100px; /* 最小幅を確保 */
+      margin-right: 18px; /* 右側に余白 */
     }
 
     /* 時限の番号テキスト */
     .today-period-num {
-      font-weight: 600; /* 太字 */
+      font-weight: 700; /* 太字 */
       color: #2b5ea7; /* 青 */
       font-size: 0.95rem; /* 標準サイズ */
     }
 
     /* 時限の時刻テキスト */
     .today-period-time {
-      font-size: 0.78rem; /* 小さめ */
-      color: #8d99a8; /* 薄いグレー */
-      margin-top: 2px; /* 上に少し隙間 */
+      font-size: 0.76rem; /* 小さめ */
+      color: #94a0b0; /* 薄いグレー */
+      margin-top: 3px; /* 上に少し隙間 */
       font-variant-numeric: tabular-nums; /* 数字の幅を揃える */
     }
 
@@ -248,7 +329,7 @@
     /* 教室・教員の情報 */
     .today-info {
       font-size: 0.82rem; /* 小さめ */
-      color: #8d99a8; /* グレー */
+      color: #94a0b0; /* グレー */
       margin-top: 3px; /* 上に少し隙間 */
     }
 
@@ -256,8 +337,8 @@
     .no-class {
       text-align: center; /* 中央揃え */
       color: #a3adb8; /* 薄いグレー */
-      padding: 40px 16px; /* ゆったりした余白 */
-      font-size: 0.95rem; /* 標準サイズ */
+      padding: 48px 16px; /* ゆったりした余白 */
+      font-size: 0.93rem; /* 標準サイズ */
       line-height: 1.8; /* 行間 */
     }
 
@@ -276,51 +357,61 @@
     .link-btn {
       display: flex; /* アイコンとテキストを横並び */
       align-items: center; /* 縦中央揃え */
-      gap: 14px; /* アイコンとテキストの隙間 */
-      padding: 20px 28px; /* ゆったりした内側余白 */
-      background-color: #f8fafb; /* ごく薄い背景 */
-      border: 1px solid #e2e6ec; /* 薄い枠線 */
-      border-radius: 12px; /* 角丸 */
+      gap: 16px; /* アイコンとテキストの隙間 */
+      padding: 22px 28px; /* ゆったりした内側余白 */
+      background-color: #ffffff; /* 白い背景 */
+      border: 1px solid #e5e8ee; /* 薄い枠線 */
+      border-radius: 14px; /* 角丸 */
       text-decoration: none; /* 下線なし */
       color: #1a2742; /* 深い紺色 */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
       font-size: 0.95rem; /* 標準サイズ */
       font-weight: 600; /* 太字 */
-      transition: all 0.2s ease; /* ホバーアニメーション */
-      min-width: 180px; /* 最小幅を確保 */
+      transition: all 0.3s ease; /* ホバーアニメーション */
+      min-width: 200px; /* 最小幅を確保 */
       flex: 1; /* 均等幅で広がる */
-      max-width: 280px; /* 最大幅を制限 */
+      max-width: 300px; /* 最大幅を制限 */
+      position: relative; /* 疑似要素用 */
+      overflow: hidden; /* はみ出しを隠す */
     }
 
     /* リンクボタンにカーソルを乗せた時 */
     .link-btn:hover {
-      background-color: #edf2fb; /* 薄い青の背景 */
       border-color: #c5d4ed; /* 青みのある枠線 */
-      transform: translateY(-1px); /* 少し浮き上がる */
-      box-shadow: 0 4px 12px rgba(43, 94, 167, 0.08); /* 薄い影 */
+      transform: translateY(-3px); /* 浮き上がる */
+      box-shadow: 0 8px 24px rgba(43, 94, 167, 0.1); /* 青みのある影 */
     }
 
     /* リンクボタンのアイコン部分 */
     .link-icon {
-      width: 44px; /* アイコンの幅 */
-      height: 44px; /* アイコンの高さ */
-      border-radius: 10px; /* 角丸 */
+      width: 48px; /* アイコンの幅 */
+      height: 48px; /* アイコンの高さ */
+      border-radius: 12px; /* 角丸 */
       display: flex; /* 中央配置用 */
       align-items: center; /* 縦中央 */
       justify-content: center; /* 横中央 */
       font-size: 1.3rem; /* アイコン文字サイズ */
       flex-shrink: 0; /* 縮小させない */
       color: #ffffff; /* 白い文字 */
+      font-weight: 700; /* 太字 */
+      transition: transform 0.3s ease; /* ホバーアニメーション */
     }
 
-    /* Moodleアイコンの背景色（オレンジ系） */
+    /* リンクボタンホバー時にアイコンを拡大 */
+    .link-btn:hover .link-icon {
+      transform: scale(1.08); /* 少し拡大 */
+    }
+
+    /* Moodleアイコンの背景（グラデーション） */
     .link-icon-moodle {
-      background-color: #e07b39; /* Moodleのオレンジ */
+      background: linear-gradient(135deg, #f59e42, #e07b39); /* オレンジのグラデーション */
+      box-shadow: 0 4px 12px rgba(224, 123, 57, 0.25); /* 影 */
     }
 
-    /* Gmailアイコンの背景色（赤系） */
+    /* Gmailアイコンの背景（グラデーション） */
     .link-icon-gmail {
-      background-color: #d44638; /* Gmailの赤 */
+      background: linear-gradient(135deg, #ea6050, #d44638); /* 赤のグラデーション */
+      box-shadow: 0 4px 12px rgba(212, 70, 56, 0.25); /* 影 */
     }
 
     /* リンクボタンのテキスト部分 */
@@ -341,8 +432,8 @@
     .link-sub {
       font-size: 0.78rem; /* 小さめ */
       font-weight: 400; /* 通常太さ */
-      color: #8d99a8; /* グレー */
-      margin-top: 2px; /* 上に少し隙間 */
+      color: #94a0b0; /* グレー */
+      margin-top: 3px; /* 上に少し隙間 */
     }
 
     /* ========================================
@@ -353,26 +444,26 @@
     .semester-tabs {
       display: flex; /* 横並び */
       gap: 4px; /* タブ間の隙間 */
-      margin-bottom: 24px; /* 下の余白 */
-      background-color: #edf0f4; /* 薄い背景 */
-      border-radius: 10px; /* 角丸 */
+      margin-bottom: 28px; /* 下の余白 */
+      background-color: #e5e8ee; /* やや濃い背景 */
+      border-radius: 12px; /* 角丸 */
       padding: 4px; /* 内側余白 */
       width: fit-content; /* 中身の幅に合わせる */
     }
 
     /* 各学期タブのボタン */
     .semester-tab {
-      padding: 8px 28px; /* 内側余白 */
+      padding: 9px 32px; /* 内側余白 */
       border: none; /* 枠線なし */
       background: none; /* 背景なし */
       cursor: pointer; /* ポインターカーソル */
-      border-radius: 8px; /* 角丸 */
+      border-radius: 10px; /* 角丸 */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
-      font-size: 0.9rem; /* 文字サイズ */
+      font-size: 0.88rem; /* 文字サイズ */
       font-weight: 500; /* やや太め */
       color: #6b7a8d; /* グレーの文字 */
-      transition: all 0.2s ease; /* アニメーション */
-      letter-spacing: 0.04em; /* 文字間隔 */
+      transition: all 0.25s ease; /* アニメーション */
+      letter-spacing: 0.05em; /* 文字間隔 */
     }
 
     /* 選択中の学期タブ */
@@ -380,7 +471,7 @@
       background-color: #ffffff; /* 白い背景 */
       color: #1a2742; /* 濃い紺の文字 */
       font-weight: 600; /* 太字 */
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); /* ほんのり影 */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* ほんのり影 */
     }
 
     /* ========================================
@@ -391,30 +482,30 @@
     .timetable-wrapper {
       overflow-x: auto; /* 横にはみ出したらスクロール */
       -webkit-overflow-scrolling: touch; /* スマホでなめらかスクロール */
-      border-radius: 14px; /* 角丸 */
+      border-radius: 16px; /* 角丸 */
       border: 1px solid #e2e6ec; /* 薄い枠線 */
     }
 
     /* 時間割テーブル本体 */
     .timetable {
       width: 100%; /* 横幅いっぱい */
-      min-width: 720px; /* 最小幅（時刻列が広がったため少し拡大） */
+      min-width: 720px; /* 最小幅 */
       border-collapse: collapse; /* セルの隙間をなくす */
       table-layout: fixed; /* セル幅を均等に */
     }
 
     /* テーブルヘッダー（曜日の行） */
     .timetable thead th {
-      background-color: #f6f8fb; /* ごく薄いグレーブルーの背景 */
+      background-color: #f4f6fa; /* ごく薄い背景 */
       color: #3d4a5c; /* 落ち着いた紺グレー */
-      padding: 14px 8px; /* ゆったりした余白 */
+      padding: 16px 8px; /* ゆったりした余白 */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
       font-weight: 600; /* 太字 */
-      font-size: 0.88rem; /* やや小さめ */
+      font-size: 0.85rem; /* やや小さめ */
       text-align: center; /* 中央揃え */
       border-bottom: 2px solid #e2e6ec; /* やや太い下線 */
       border-right: 1px solid #eaecf0; /* 薄い仕切り線 */
-      letter-spacing: 0.06em; /* 文字間隔 */
+      letter-spacing: 0.08em; /* 文字間隔を広めに */
     }
 
     /* ヘッダーの最後の列の右線を消す */
@@ -424,9 +515,9 @@
 
     /* ヘッダーの最初のセル（「時限」のラベル） */
     .timetable thead th:first-child {
-      width: 88px; /* 時刻表示のため幅を広めに */
-      font-size: 0.8rem; /* 小さめ */
-      color: #8d99a8; /* 薄いグレー */
+      width: 90px; /* 時刻表示のため幅を広めに */
+      font-size: 0.78rem; /* 小さめ */
+      color: #94a0b0; /* 薄いグレー */
     }
 
     /* 土曜日のヘッダー（控えめなデザイン） */
@@ -438,8 +529,8 @@
     .timetable td {
       border-right: 1px solid #eef0f4; /* ごく薄い仕切り線 */
       border-bottom: 1px solid #eef0f4; /* ごく薄い下線 */
-      padding: 0; /* パディングなし（中のボタンが埋める） */
-      height: 88px; /* セルの高さ（余裕をもたせる） */
+      padding: 0; /* パディングなし */
+      height: 90px; /* セルの高さ（余裕をもたせる） */
       vertical-align: top; /* 上揃え */
     }
 
@@ -450,10 +541,10 @@
 
     /* 時限番号と時刻のセル */
     .timetable td.period-label {
-      background-color: #f9fafb; /* ごく薄い背景 */
+      background-color: #f8f9fc; /* ごく薄い背景 */
       text-align: center; /* 中央 */
       vertical-align: middle; /* 縦中央 */
-      width: 88px; /* 幅を広めに固定 */
+      width: 90px; /* 幅を広めに固定 */
       padding: 8px 4px; /* 内側余白 */
       border-right: 1px solid #e2e6ec; /* 右側の仕切り線 */
     }
@@ -468,9 +559,9 @@
 
     /* 時刻の文字 */
     .period-time {
-      font-size: 0.68rem; /* とても小さめ */
+      font-size: 0.66rem; /* とても小さめ */
       color: #a3adb8; /* 薄いグレー */
-      margin-top: 2px; /* 上に少し隙間 */
+      margin-top: 3px; /* 上に少し隙間 */
       display: block; /* ブロック表示 */
       font-variant-numeric: tabular-nums; /* 数字の幅を揃える */
       line-height: 1.3; /* 行間 */
@@ -483,7 +574,7 @@
 
     /* 6限・7限の通常セル内の文字を薄く */
     .timetable tr.row-late td:not(.period-label) {
-      opacity: 0.55; /* 薄く表示 */
+      opacity: 0.5; /* 薄く表示 */
     }
 
     /* 6限・7限にカーソルを乗せた時は通常の濃さに */
@@ -493,28 +584,28 @@
 
     /* 6限・7限の時限ラベル */
     .timetable tr.row-late td.period-label .period-num {
-      color: #a3adb8; /* 薄いグレー */
+      color: #b4bcc8; /* 薄いグレー */
     }
 
     /* 土曜日の列（控えめ） */
     .timetable td.col-sat {
-      background-color: #fcfcfd; /* ほんのりグレーの背景 */
+      background-color: #fbfcfd; /* ほんのりグレーの背景 */
     }
 
     /* 各コマのクリック可能なボタン */
     .cell-btn {
       width: 100%; /* セルいっぱいの幅 */
       height: 100%; /* セルいっぱいの高さ */
-      min-height: 88px; /* 最小の高さ */
+      min-height: 90px; /* 最小の高さ */
       border: none; /* 枠線なし */
       background: none; /* 背景なし */
       cursor: pointer; /* ポインターカーソル */
-      padding: 10px 10px; /* ゆとりある内側余白 */
+      padding: 10px 12px; /* ゆとりある内側余白 */
       text-align: left; /* 左揃え */
       display: flex; /* 縦並びレイアウト */
       flex-direction: column; /* 縦方向に並べる */
       justify-content: center; /* 縦中央 */
-      transition: background-color 0.2s ease; /* アニメーション */
+      transition: all 0.2s ease; /* アニメーション */
       border-radius: 0; /* 角丸なし */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
     }
@@ -526,24 +617,24 @@
 
     /* 空のコマにカーソルを乗せた時 */
     .cell-btn:hover {
-      background-color: #f5f7fa; /* ごく薄いグレー */
+      background-color: #f4f6fb; /* ごく薄い青 */
     }
 
     /* 授業が登録されているコマ */
     .cell-btn.has-class {
-      background-color: #f0f5ff; /* 薄い青い背景 */
+      background: linear-gradient(135deg, #f4f8ff 0%, #eaf0fb 100%); /* 薄い青グラデーション */
       border-left: 3px solid #2b5ea7; /* 左側に青い線 */
-      padding-left: 8px; /* 左線の分だけパディング調整 */
+      padding-left: 10px; /* 左線の分だけパディング調整 */
     }
 
     /* 登録済みコマにカーソルを乗せた時 */
     .cell-btn.has-class:hover {
-      background-color: #e6eefa; /* やや濃い青 */
+      background: linear-gradient(135deg, #eaf0fb 0%, #dce6f7 100%); /* やや濃い青グラデーション */
     }
 
     /* 登録されている科目名の表示 */
     .cell-subject {
-      font-size: 0.88rem; /* 読みやすいサイズに拡大 */
+      font-size: 0.88rem; /* 読みやすいサイズ */
       font-weight: 600; /* 太字 */
       color: #1a2742; /* 深い紺色 */
       line-height: 1.4; /* 行間 */
@@ -556,9 +647,9 @@
 
     /* 登録されている教室の表示 */
     .cell-room {
-      font-size: 0.75rem; /* 小さめ */
-      color: #8d99a8; /* グレー */
-      margin-top: 4px; /* 上に少し隙間 */
+      font-size: 0.73rem; /* 小さめ */
+      color: #94a0b0; /* グレー */
+      margin-top: 5px; /* 上に少し隙間 */
     }
 
     /* 空のコマの「＋」マーク */
@@ -567,11 +658,13 @@
       font-size: 1.1rem; /* やや大きめ */
       text-align: center; /* 中央 */
       width: 100%; /* 横幅いっぱい */
+      transition: all 0.2s ease; /* アニメーション */
     }
 
     /* 空のコマにカーソルを乗せた時の「＋」マーク */
     .cell-btn:hover .cell-empty {
-      color: #8daed4; /* 薄い青 */
+      color: #6b9de8; /* 明るい青 */
+      transform: scale(1.2); /* 少し拡大 */
     }
 
     /* ========================================
@@ -583,7 +676,7 @@
       display: flex; /* 横並び */
       justify-content: space-between; /* 両端に配置 */
       align-items: center; /* 縦中央揃え */
-      margin-bottom: 24px; /* 下の余白 */
+      margin-bottom: 28px; /* 下の余白 */
     }
 
     /* 掲示板の見出し */
@@ -591,74 +684,77 @@
       font-size: 1.4rem; /* 大きめ */
       font-weight: 600; /* 太字 */
       color: #1a2742; /* 深い紺色 */
-      letter-spacing: 0.05em; /* 文字間隔 */
+      letter-spacing: 0.06em; /* 文字間隔 */
     }
 
     /* 新規投稿ボタン */
     .btn-new-post {
-      padding: 10px 24px; /* 内側余白 */
-      background-color: #2b5ea7; /* 落ち着いた青 */
+      padding: 10px 28px; /* 内側余白 */
+      background: linear-gradient(135deg, #2b5ea7, #3d7bd9); /* 青のグラデーション */
       color: #ffffff; /* 白い文字 */
       border: none; /* 枠線なし */
-      border-radius: 8px; /* 角丸 */
+      border-radius: 10px; /* 角丸 */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
-      font-size: 0.9rem; /* 文字サイズ */
+      font-size: 0.88rem; /* 文字サイズ */
       font-weight: 600; /* 太字 */
       cursor: pointer; /* ポインター */
-      transition: background-color 0.2s ease; /* アニメーション */
-      letter-spacing: 0.03em; /* 文字間隔 */
+      transition: all 0.3s ease; /* アニメーション */
+      letter-spacing: 0.04em; /* 文字間隔 */
+      box-shadow: 0 3px 12px rgba(43, 94, 167, 0.2); /* 青い影 */
     }
 
     /* 新規投稿ボタンにカーソルを乗せた時 */
     .btn-new-post:hover {
-      background-color: #234d8c; /* やや濃い青 */
+      transform: translateY(-2px); /* 浮き上がる */
+      box-shadow: 0 6px 20px rgba(43, 94, 167, 0.3); /* 影を深く */
     }
 
     /* お知らせ一覧のリスト */
     .post-list {
       display: flex; /* 縦並び */
       flex-direction: column; /* 縦方向 */
-      gap: 12px; /* カード間の隙間 */
+      gap: 14px; /* カード間の隙間 */
     }
 
     /* 各お知らせカード */
     .post-card {
       background-color: #ffffff; /* 白背景 */
       border: 1px solid #eaecf0; /* 薄いグレー枠 */
-      border-radius: 12px; /* 角丸 */
+      border-radius: 14px; /* 角丸 */
       overflow: hidden; /* はみ出しを隠す */
-      transition: box-shadow 0.2s ease; /* ホバーアニメーション */
+      transition: all 0.25s ease; /* ホバーアニメーション */
     }
 
     /* お知らせカードにカーソルを乗せた時 */
     .post-card:hover {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* ほんのり影 */
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); /* ほんのり影 */
+      border-color: #d5dae3; /* 枠線を少し濃く */
     }
 
     /* お知らせのヘッダー部分（クリック可能） */
     .post-header {
       display: flex; /* 横並び */
       align-items: center; /* 縦中央 */
-      padding: 18px 24px; /* ゆったりした余白 */
+      padding: 20px 28px; /* ゆったりした余白 */
       cursor: pointer; /* ポインター */
-      gap: 12px; /* 要素間の隙間 */
-      transition: background-color 0.15s ease; /* ホバーアニメーション */
+      gap: 14px; /* 要素間の隙間 */
+      transition: background-color 0.2s ease; /* ホバーアニメーション */
       user-select: none; /* テキスト選択を無効化 */
     }
 
     /* お知らせヘッダーにカーソルを乗せた時 */
     .post-header:hover {
-      background-color: #f8fafb; /* ごく薄い背景 */
+      background-color: #f8f9fc; /* ごく薄い背景 */
     }
 
     /* カテゴリラベル（共通スタイル） */
     .post-category {
       display: inline-block; /* インラインブロック */
-      padding: 3px 10px; /* 内側余白 */
-      border-radius: 4px; /* 角丸 */
-      font-size: 0.75rem; /* 小さめ */
+      padding: 4px 12px; /* 内側余白 */
+      border-radius: 6px; /* 角丸 */
+      font-size: 0.73rem; /* 小さめ */
       font-weight: 600; /* 太字 */
-      letter-spacing: 0.03em; /* 文字間隔 */
+      letter-spacing: 0.04em; /* 文字間隔 */
       white-space: nowrap; /* 改行なし */
       flex-shrink: 0; /* 縮小させない */
     }
@@ -685,6 +781,7 @@
     .cat-important {
       background-color: #fef2f2; /* 薄い赤背景 */
       color: #b91c1c; /* 濃い赤文字 */
+      border: 1px solid #fecaca; /* 赤い枠線で強調 */
     }
 
     /* お知らせのタイトルと日付のエリア */
@@ -695,7 +792,7 @@
 
     /* お知らせのタイトル */
     .post-title {
-      font-size: 0.95rem; /* 標準サイズ */
+      font-size: 0.93rem; /* 標準サイズ */
       font-weight: 600; /* 太字 */
       color: #1a2742; /* 深い紺色 */
       line-height: 1.5; /* 行間 */
@@ -703,31 +800,32 @@
 
     /* お知らせの投稿日 */
     .post-date {
-      font-size: 0.78rem; /* 小さめ */
-      color: #8d99a8; /* グレー */
-      margin-top: 2px; /* 上に少し隙間 */
+      font-size: 0.76rem; /* 小さめ */
+      color: #94a0b0; /* グレー */
+      margin-top: 3px; /* 上に少し隙間 */
       font-variant-numeric: tabular-nums; /* 数字の幅を揃える */
     }
 
     /* NEWマーク（新着3日以内） */
     .post-new {
       display: inline-block; /* インラインブロック */
-      padding: 2px 8px; /* 内側余白 */
-      background-color: #2b5ea7; /* 青背景 */
+      padding: 3px 10px; /* 内側余白 */
+      background: linear-gradient(135deg, #2b5ea7, #3d7bd9); /* 青グラデーション */
       color: #ffffff; /* 白文字 */
-      border-radius: 4px; /* 角丸 */
-      font-size: 0.68rem; /* 小さめ */
+      border-radius: 10px; /* ピル型の角丸 */
+      font-size: 0.65rem; /* 小さめ */
       font-weight: 700; /* 太字 */
-      letter-spacing: 0.06em; /* 文字間隔 */
+      letter-spacing: 0.08em; /* 文字間隔 */
       flex-shrink: 0; /* 縮小させない */
       line-height: 1.4; /* 行間 */
+      box-shadow: 0 2px 6px rgba(43, 94, 167, 0.25); /* 影 */
     }
 
     /* アコーディオンの開閉矢印 */
     .post-arrow {
-      font-size: 0.8rem; /* 小さめ */
-      color: #a3adb8; /* グレー */
-      transition: transform 0.2s ease; /* 回転アニメーション */
+      font-size: 0.75rem; /* 小さめ */
+      color: #b4bcc8; /* グレー */
+      transition: transform 0.3s ease; /* 回転アニメーション */
       flex-shrink: 0; /* 縮小させない */
     }
 
@@ -740,42 +838,42 @@
     .post-body {
       max-height: 0; /* 閉じている時は高さゼロ */
       overflow: hidden; /* はみ出しを隠す */
-      transition: max-height 0.3s ease; /* 開閉アニメーション */
+      transition: max-height 0.35s ease; /* 開閉アニメーション */
     }
 
     /* 本文の内側コンテンツ */
     .post-body-inner {
-      padding: 0 24px 20px; /* 上なし・左右・下の余白 */
+      padding: 0 28px 24px; /* 上なし・左右・下の余白 */
       border-top: 1px solid #eef0f4; /* 薄い上線 */
-      padding-top: 16px; /* 上線の下に余白 */
+      padding-top: 18px; /* 上線の下に余白 */
     }
 
     /* 本文テキスト */
     .post-body-text {
-      font-size: 0.92rem; /* やや小さめ */
+      font-size: 0.9rem; /* やや小さめ */
       color: #3d4a5c; /* 落ち着いた色 */
-      line-height: 1.9; /* ゆとりある行間 */
+      line-height: 2; /* ゆとりある行間 */
       white-space: pre-wrap; /* 改行をそのまま表示 */
     }
 
     /* お知らせ削除ボタン */
     .post-delete-btn {
-      margin-top: 14px; /* 上の余白 */
-      padding: 6px 16px; /* 内側余白 */
+      margin-top: 16px; /* 上の余白 */
+      padding: 7px 18px; /* 内側余白 */
       background: none; /* 背景なし */
       border: 1px solid #fcd5d5; /* 薄い赤枠 */
-      border-radius: 6px; /* 角丸 */
+      border-radius: 8px; /* 角丸 */
       color: #c53030; /* 赤文字 */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
-      font-size: 0.8rem; /* 小さめ */
+      font-size: 0.78rem; /* 小さめ */
       font-weight: 500; /* やや太め */
       cursor: pointer; /* ポインター */
-      transition: all 0.2s ease; /* アニメーション */
+      transition: all 0.25s ease; /* アニメーション */
     }
 
     /* 削除ボタンにカーソルを乗せた時 */
     .post-delete-btn:hover {
-      background-color: #fff5f5; /* 薄い赤背景 */
+      background-color: #fef2f2; /* 薄い赤背景 */
       border-color: #f5a3a3; /* やや濃い赤枠 */
     }
 
@@ -783,8 +881,8 @@
     .no-posts {
       text-align: center; /* 中央揃え */
       color: #a3adb8; /* 薄いグレー */
-      padding: 48px 16px; /* ゆったりした余白 */
-      font-size: 0.95rem; /* 標準サイズ */
+      padding: 56px 16px; /* ゆったりした余白 */
+      font-size: 0.93rem; /* 標準サイズ */
     }
 
     /* ========================================
@@ -796,29 +894,40 @@
       display: none; /* デフォルト非表示 */
       position: fixed; /* 画面に固定 */
       inset: 0; /* 上下左右全体を覆う */
-      background-color: rgba(20, 30, 50, 0.4); /* 半透明の暗い背景 */
+      background-color: rgba(15, 23, 42, 0.45); /* 半透明の暗い背景 */
       z-index: 200; /* 最前面に表示 */
       align-items: center; /* 縦中央 */
       justify-content: center; /* 横中央 */
       padding: 16px; /* スマホ対策の余白 */
-      backdrop-filter: blur(2px); /* 背景をぼかす */
+      backdrop-filter: blur(6px); /* 背景を強めにぼかす */
+      -webkit-backdrop-filter: blur(6px); /* Safari対応 */
+      opacity: 0; /* 透明（アニメーション用） */
+      transition: opacity 0.3s ease; /* フェードアニメーション */
     }
 
     /* モーダルが表示されている時 */
     .modal-overlay.show {
       display: flex; /* flexで中央配置 */
+      opacity: 1; /* 完全表示 */
     }
 
     /* モーダル本体（白い入力フォームの枠） */
     .modal {
       background-color: #ffffff; /* 白い背景 */
-      border-radius: 16px; /* 角丸 */
-      padding: 36px; /* ゆったりした内側余白 */
+      border-radius: 20px; /* 大きめの角丸 */
+      padding: 40px; /* ゆったりした内側余白 */
       width: 100%; /* 幅いっぱい */
       max-width: 440px; /* 最大幅 */
       max-height: 90vh; /* 画面の90%まで */
       overflow-y: auto; /* 溢れたらスクロール */
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12); /* 大きな影 */
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15); /* 大きな影 */
+      animation: modalSlideUp 0.35s ease; /* 表示時のスライドアニメーション */
+    }
+
+    /* モーダルのスライドアップアニメーション */
+    @keyframes modalSlideUp {
+      from { transform: translateY(20px); opacity: 0; } /* 下から */
+      to { transform: translateY(0); opacity: 1; } /* 元の位置へ */
     }
 
     /* 掲示板用のモーダルは少し幅を広く */
@@ -831,7 +940,7 @@
       display: flex; /* 横並び */
       justify-content: space-between; /* 両端に配置 */
       align-items: center; /* 縦中央 */
-      margin-bottom: 28px; /* 下にゆとりある余白 */
+      margin-bottom: 32px; /* 下にゆとりある余白 */
     }
 
     /* モーダルのタイトル（明朝体） */
@@ -839,41 +948,42 @@
       font-size: 1.15rem; /* やや大きめ */
       font-weight: 600; /* 太字 */
       color: #1a2742; /* 深い紺 */
-      letter-spacing: 0.04em; /* 文字間隔 */
+      letter-spacing: 0.05em; /* 文字間隔 */
     }
 
     /* 閉じるボタン（×） */
     .modal-close {
       background: none; /* 背景なし */
       border: none; /* 枠線なし */
-      font-size: 1.5rem; /* 大きめ */
-      color: #a3adb8; /* グレー */
+      font-size: 1.4rem; /* 大きめ */
+      color: #b4bcc8; /* グレー */
       cursor: pointer; /* ポインター */
-      padding: 4px 8px; /* 内側余白 */
-      border-radius: 6px; /* 角丸 */
+      padding: 6px 10px; /* 内側余白 */
+      border-radius: 8px; /* 角丸 */
       line-height: 1; /* 行間 */
       transition: all 0.2s; /* アニメーション */
     }
 
     /* 閉じるボタンにカーソルを乗せた時 */
     .modal-close:hover {
-      background-color: #f3f5f7; /* 薄いグレー背景 */
+      background-color: #f0f2f7; /* 薄いグレー背景 */
       color: #3d4a5c; /* 濃くする */
     }
 
     /* フォームの各入力グループ */
     .form-group {
-      margin-bottom: 20px; /* 下にゆとりある余白 */
+      margin-bottom: 22px; /* 下にゆとりある余白 */
     }
 
     /* 入力欄のラベル */
     .form-group label {
       display: block; /* ブロック表示 */
-      font-size: 0.82rem; /* 小さめ */
+      font-size: 0.8rem; /* 小さめ */
       font-weight: 600; /* 太字 */
       color: #3d4a5c; /* 落ち着いたグレー */
       margin-bottom: 8px; /* 下の余白 */
-      letter-spacing: 0.03em; /* 文字間隔 */
+      letter-spacing: 0.04em; /* 文字間隔 */
+      text-transform: none; /* 変換なし */
     }
 
     /* テキスト入力欄・セレクト・テキストエリア共通 */
@@ -881,21 +991,21 @@
     .form-group select,
     .form-group textarea {
       width: 100%; /* 横幅いっぱい */
-      padding: 11px 14px; /* ゆとりある内側余白 */
+      padding: 12px 16px; /* ゆとりある内側余白 */
       border: 1.5px solid #dde1e8; /* 薄いグレーの枠線 */
-      border-radius: 8px; /* 角丸 */
+      border-radius: 10px; /* 角丸 */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
       font-size: 0.95rem; /* 文字サイズ */
       color: #23272f; /* 文字色 */
-      transition: border-color 0.2s ease; /* アニメーション */
-      background-color: #ffffff; /* 白背景 */
+      transition: all 0.25s ease; /* アニメーション */
+      background-color: #fafbfc; /* ごく薄い背景 */
     }
 
     /* テキストエリアの追加スタイル */
     .form-group textarea {
       min-height: 120px; /* 最小高さ */
       resize: vertical; /* 縦方向のみリサイズ可 */
-      line-height: 1.7; /* ゆとりある行間 */
+      line-height: 1.8; /* ゆとりある行間 */
     }
 
     /* 入力欄にフォーカスした時 */
@@ -904,74 +1014,77 @@
     .form-group textarea:focus {
       outline: none; /* デフォルトの枠を消す */
       border-color: #2b5ea7; /* 青い枠線 */
-      box-shadow: 0 0 0 3px rgba(43, 94, 167, 0.08); /* ごく薄い青の影 */
+      box-shadow: 0 0 0 4px rgba(43, 94, 167, 0.08); /* ごく薄い青の影 */
+      background-color: #ffffff; /* 完全な白に */
     }
 
     /* モーダル内のボタン群 */
     .modal-actions {
       display: flex; /* 横並び */
       gap: 10px; /* ボタン間の隙間 */
-      margin-top: 32px; /* 上にゆとりある余白 */
+      margin-top: 36px; /* 上にゆとりある余白 */
     }
 
     /* 登録ボタン（青いメインボタン） */
     .btn-primary {
       flex: 1; /* 残りスペースをすべて使う */
-      padding: 11px 24px; /* ゆとりある内側余白 */
-      background-color: #2b5ea7; /* 落ち着いた青 */
+      padding: 12px 24px; /* ゆとりある内側余白 */
+      background: linear-gradient(135deg, #2b5ea7, #3d7bd9); /* 青のグラデーション */
       color: #ffffff; /* 白い文字 */
       border: none; /* 枠線なし */
-      border-radius: 8px; /* 角丸 */
+      border-radius: 10px; /* 角丸 */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
       font-size: 0.93rem; /* 文字サイズ */
       font-weight: 600; /* 太字 */
       cursor: pointer; /* ポインター */
-      transition: background-color 0.2s ease; /* アニメーション */
-      letter-spacing: 0.03em; /* 文字間隔 */
+      transition: all 0.3s ease; /* アニメーション */
+      letter-spacing: 0.04em; /* 文字間隔 */
+      box-shadow: 0 3px 12px rgba(43, 94, 167, 0.2); /* 影 */
     }
 
     /* 登録ボタンにカーソルを乗せた時 */
     .btn-primary:hover {
-      background-color: #234d8c; /* やや濃い青 */
+      transform: translateY(-1px); /* 少し浮く */
+      box-shadow: 0 6px 20px rgba(43, 94, 167, 0.3); /* 影を深く */
     }
 
     /* 削除ボタン（赤いボタン） */
     .btn-danger {
-      padding: 11px 20px; /* 内側余白 */
+      padding: 12px 20px; /* 内側余白 */
       background-color: #ffffff; /* 白い背景 */
       color: #c53030; /* 赤い文字 */
       border: 1.5px solid #fcd5d5; /* 薄い赤の枠線 */
-      border-radius: 8px; /* 角丸 */
+      border-radius: 10px; /* 角丸 */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
       font-size: 0.93rem; /* 文字サイズ */
       font-weight: 600; /* 太字 */
       cursor: pointer; /* ポインター */
-      transition: all 0.2s ease; /* アニメーション */
+      transition: all 0.25s ease; /* アニメーション */
     }
 
     /* 削除ボタンにカーソルを乗せた時 */
     .btn-danger:hover {
-      background-color: #fff5f5; /* 薄い赤の背景 */
+      background-color: #fef2f2; /* 薄い赤の背景 */
       border-color: #f5a3a3; /* やや濃い赤枠 */
     }
 
     /* キャンセルボタン（グレーのボタン） */
     .btn-secondary {
-      padding: 11px 20px; /* 内側余白 */
-      background-color: #f5f7f9; /* ごく薄いグレーの背景 */
+      padding: 12px 20px; /* 内側余白 */
+      background-color: #f0f2f7; /* ごく薄いグレーの背景 */
       color: #3d4a5c; /* 濃いグレーの文字 */
       border: 1px solid #e2e6ec; /* グレーの枠線 */
-      border-radius: 8px; /* 角丸 */
+      border-radius: 10px; /* 角丸 */
       font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
       font-size: 0.93rem; /* 文字サイズ */
       font-weight: 500; /* やや太め */
       cursor: pointer; /* ポインター */
-      transition: background-color 0.2s ease; /* アニメーション */
+      transition: all 0.25s ease; /* アニメーション */
     }
 
     /* キャンセルボタンにカーソルを乗せた時 */
     .btn-secondary:hover {
-      background-color: #eaecf0; /* やや濃いグレー */
+      background-color: #e5e8ee; /* やや濃いグレー */
     }
 
     /* ========================================
@@ -1002,13 +1115,19 @@
 
       /* カードの余白を縮小 */
       .card {
-        padding: 22px 18px; /* 余白を縮小 */
-        border-radius: 12px; /* 角丸を少し小さく */
+        padding: 24px 20px; /* 余白を縮小 */
+        border-radius: 14px; /* 角丸を少し小さく */
+      }
+
+      /* カードのホバー効果を無効化（モバイルではタッチなので不要） */
+      .card:hover {
+        transform: none; /* 浮き上がり無効 */
       }
 
       /* モーダルの余白を縮小 */
       .modal {
-        padding: 24px 20px; /* 余白を縮小 */
+        padding: 28px 22px; /* 余白を縮小 */
+        border-radius: 16px; /* 角丸を少し小さく */
       }
 
       /* ウェルカムメッセージの文字を小さく */
@@ -1022,27 +1141,37 @@
         margin-right: 12px; /* 右余白を縮小 */
       }
 
+      /* 今日の時間割のホバー効果をモバイル用に調整 */
+      .today-item:hover {
+        transform: none; /* スライド無効 */
+      }
+
       /* リンクボタンの最大幅を解除してフルに使う */
       .link-btn {
         max-width: none; /* 最大幅なし */
+      }
+
+      /* リンクボタンのホバー効果をモバイル用に調整 */
+      .link-btn:hover {
+        transform: none; /* 浮き上がり無効 */
       }
 
       /* 掲示板ヘッダーを縦並びに */
       .board-header {
         flex-direction: column; /* 縦並び */
         align-items: flex-start; /* 左揃え */
-        gap: 12px; /* 隙間 */
+        gap: 14px; /* 隙間 */
       }
 
       /* お知らせヘッダーの余白を縮小 */
       .post-header {
-        padding: 14px 16px; /* 余白を縮小 */
+        padding: 16px 18px; /* 余白を縮小 */
       }
 
       /* お知らせ本文の余白を縮小 */
       .post-body-inner {
-        padding: 0 16px 16px; /* 余白を縮小 */
-        padding-top: 12px; /* 上側の余白 */
+        padding: 0 18px 18px; /* 余白を縮小 */
+        padding-top: 14px; /* 上側の余白 */
       }
     }
   </style>
