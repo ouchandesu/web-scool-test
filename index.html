@@ -414,6 +414,18 @@
       box-shadow: 0 4px 12px rgba(212, 70, 56, 0.25); /* 影 */
     }
 
+    /* UNIPAアイコンの背景（グラデーション・グリーン系） */
+    .link-icon-unipa {
+      background: linear-gradient(135deg, #34d399, #059669); /* 緑のグラデーション */
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25); /* 影 */
+    }
+
+    /* 図書館アイコンの背景（グラデーション・パープル系） */
+    .link-icon-library {
+      background: linear-gradient(135deg, #a78bfa, #7c3aed); /* 紫のグラデーション */
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25); /* 影 */
+    }
+
     /* リンクボタンのテキスト部分 */
     .link-text {
       display: flex; /* 縦並び */
@@ -1146,9 +1158,26 @@
         transform: none; /* スライド無効 */
       }
 
-      /* リンクボタンの最大幅を解除してフルに使う */
+      /* リンクボタンを2列グリッドに変更 */
+      .links-grid {
+        display: grid; /* グリッドレイアウト */
+        grid-template-columns: 1fr 1fr; /* 2列均等 */
+        gap: 10px; /* 隙間を縮小 */
+      }
+
+      /* リンクボタンのモバイル調整 */
       .link-btn {
         max-width: none; /* 最大幅なし */
+        min-width: 0; /* 最小幅なし */
+        padding: 16px 14px; /* 余白を縮小 */
+        gap: 10px; /* アイコンとテキストの隙間を縮小 */
+      }
+
+      /* リンクアイコンをやや小さく */
+      .link-icon {
+        width: 40px; /* 幅を縮小 */
+        height: 40px; /* 高さを縮小 */
+        font-size: 1.1rem; /* 文字サイズを縮小 */
       }
 
       /* リンクボタンのホバー効果をモバイル用に調整 */
@@ -1237,6 +1266,26 @@
             <div class="link-text">
               <span class="link-label">Gmail</span>
               <span class="link-sub">大学メール</span>
+            </div>
+          </a>
+          <!-- UNIPAリンク -->
+          <a href="#" target="_blank" rel="noopener noreferrer" class="link-btn" id="link-unipa">
+            <!-- アイコン部分 -->
+            <div class="link-icon link-icon-unipa">U</div>
+            <!-- テキスト部分 -->
+            <div class="link-text">
+              <span class="link-label">UNIPA</span>
+              <span class="link-sub">教務システム</span>
+            </div>
+          </a>
+          <!-- 図書館リンク -->
+          <a href="#" target="_blank" rel="noopener noreferrer" class="link-btn" id="link-library">
+            <!-- アイコン部分 -->
+            <div class="link-icon link-icon-library">L</div>
+            <!-- テキスト部分 -->
+            <div class="link-text">
+              <span class="link-label">図書館</span>
+              <span class="link-sub">蔵書検索・予約</span>
             </div>
           </a>
         </div>
@@ -1382,13 +1431,17 @@
     // ※ 実際のURLに差し替える場合はここを変更してください
     // ========================================
     const EXTERNAL_LINKS = {
-      moodle: "#",  // Moodleの実際のURLに差し替える
-      gmail: "#"    // Gmailの実際のURLに差し替える
+      moodle: "#",   // Moodleの実際のURLに差し替える
+      gmail: "#",    // Gmailの実際のURLに差し替える
+      unipa: "#",    // UNIPAの実際のURLに差し替える
+      library: "#"   // 図書館の実際のURLに差し替える
     };
 
     // リンクボタンにURLを設定
-    document.getElementById("link-moodle").href = EXTERNAL_LINKS.moodle; // MoodleのURLをセット
-    document.getElementById("link-gmail").href = EXTERNAL_LINKS.gmail;   // GmailのURLをセット
+    document.getElementById("link-moodle").href = EXTERNAL_LINKS.moodle;   // MoodleのURLをセット
+    document.getElementById("link-gmail").href = EXTERNAL_LINKS.gmail;     // GmailのURLをセット
+    document.getElementById("link-unipa").href = EXTERNAL_LINKS.unipa;     // UNIPAのURLをセット
+    document.getElementById("link-library").href = EXTERNAL_LINKS.library; // 図書館のURLをセット
 
     // ========================================
     // 時間割関連の定数
