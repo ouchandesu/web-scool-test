@@ -683,20 +683,135 @@
        掲示板ページ
        ======================================== */
 
-    /* 掲示板ヘッダー（タイトルと新規投稿ボタンを横並び） */
+    /* 掲示板ヘッダー（タイトルと管理者エリアを縦に配置） */
     .board-header {
       display: flex; /* 横並び */
       justify-content: space-between; /* 両端に配置 */
-      align-items: center; /* 縦中央揃え */
-      margin-bottom: 28px; /* 下の余白 */
+      align-items: flex-start; /* 上揃え */
+      margin-bottom: 32px; /* 下の余白 */
+      flex-wrap: wrap; /* 折り返し可能 */
+      gap: 12px; /* 要素間の隙間 */
     }
 
     /* 掲示板の見出し */
     .board-header h2 {
-      font-size: 1.4rem; /* 大きめ */
+      font-size: 1.5rem; /* 大きめ */
       font-weight: 600; /* 太字 */
       color: #1a2742; /* 深い紺色 */
+      letter-spacing: 0.08em; /* 文字間隔を広めに */
+    }
+
+    /* 掲示板ヘッダーの右側エリア（管理者UI + 新規投稿ボタン） */
+    .board-header-right {
+      display: flex; /* 横並び */
+      align-items: center; /* 縦中央揃え */
+      gap: 14px; /* 要素間の隙間 */
+    }
+
+    /* 管理者ログインリンク（小さく控えめ） */
+    .admin-login-link {
+      font-size: 0.75rem; /* 小さめの文字 */
+      color: #94a0b0; /* 薄いグレー */
+      cursor: pointer; /* ポインター */
+      text-decoration: none; /* 下線なし */
+      transition: color 0.2s ease; /* ホバーアニメーション */
+      white-space: nowrap; /* 改行なし */
+      letter-spacing: 0.03em; /* 文字間隔 */
+    }
+
+    /* 管理者ログインリンクにカーソルを乗せた時 */
+    .admin-login-link:hover {
+      color: #2b5ea7; /* 青に変化 */
+    }
+
+    /* 管理者パスワード入力エリア */
+    .admin-login-form {
+      display: none; /* 初期状態は非表示 */
+      align-items: center; /* 縦中央揃え */
+      gap: 8px; /* 要素間の隙間 */
+    }
+
+    /* 管理者パスワード入力フォームが表示されている時 */
+    .admin-login-form.show {
+      display: flex; /* フレックスで表示 */
+    }
+
+    /* パスワード入力欄 */
+    .admin-password-input {
+      padding: 6px 12px; /* 内側余白 */
+      border: 1.5px solid #dde1e8; /* 薄いグレー枠 */
+      border-radius: 8px; /* 角丸 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.82rem; /* 小さめの文字 */
+      width: 140px; /* 入力欄の幅 */
+      transition: border-color 0.2s ease; /* ホバーアニメーション */
+      background-color: #fafbfc; /* ごく薄い背景 */
+    }
+
+    /* パスワード入力欄にフォーカスした時 */
+    .admin-password-input:focus {
+      outline: none; /* デフォルトの枠を消す */
+      border-color: #2b5ea7; /* 青い枠線 */
+      box-shadow: 0 0 0 3px rgba(43, 94, 167, 0.08); /* 薄い青の影 */
+    }
+
+    /* ログインボタン（小さめ） */
+    .admin-login-btn {
+      padding: 6px 14px; /* 内側余白 */
+      background-color: #1a2742; /* 濃い紺 */
+      color: #ffffff; /* 白文字 */
+      border: none; /* 枠線なし */
+      border-radius: 8px; /* 角丸 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.78rem; /* 小さめ */
+      font-weight: 600; /* 太字 */
+      cursor: pointer; /* ポインター */
+      transition: background-color 0.2s ease; /* アニメーション */
+    }
+
+    /* ログインボタンにカーソルを乗せた時 */
+    .admin-login-btn:hover {
+      background-color: #2b5ea7; /* 青に変化 */
+    }
+
+    /* ログアウトボタン */
+    .admin-logout-btn {
+      padding: 6px 14px; /* 内側余白 */
+      background: none; /* 背景なし */
+      border: 1px solid #dde1e8; /* グレー枠 */
+      border-radius: 8px; /* 角丸 */
+      color: #6b7a8d; /* グレー文字 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.75rem; /* 小さめ */
+      font-weight: 500; /* やや太め */
+      cursor: pointer; /* ポインター */
+      transition: all 0.2s ease; /* アニメーション */
+      display: none; /* 初期状態は非表示 */
+    }
+
+    /* ログアウトボタンにカーソルを乗せた時 */
+    .admin-logout-btn:hover {
+      background-color: #f0f2f7; /* 薄いグレー背景 */
+      border-color: #b4bcc8; /* やや濃い枠線 */
+    }
+
+    /* 管理者モードのインジケーター */
+    .admin-badge {
+      display: none; /* 初期状態は非表示 */
+      padding: 3px 10px; /* 内側余白 */
+      background-color: #1a2742; /* 濃い紺 */
+      color: #ffffff; /* 白文字 */
+      border-radius: 10px; /* ピル型 */
+      font-size: 0.65rem; /* 小さめ */
+      font-weight: 700; /* 太字 */
       letter-spacing: 0.06em; /* 文字間隔 */
+    }
+
+    /* パスワードエラーメッセージ */
+    .admin-error {
+      font-size: 0.73rem; /* 小さめ */
+      color: #c53030; /* 赤文字 */
+      display: none; /* 初期状態は非表示 */
     }
 
     /* 新規投稿ボタン */
@@ -713,6 +828,7 @@
       transition: all 0.3s ease; /* アニメーション */
       letter-spacing: 0.04em; /* 文字間隔 */
       box-shadow: 0 3px 12px rgba(43, 94, 167, 0.2); /* 青い影 */
+      display: none; /* 初期状態は非表示（管理者モードでのみ表示） */
     }
 
     /* 新規投稿ボタンにカーソルを乗せた時 */
@@ -725,31 +841,59 @@
     .post-list {
       display: flex; /* 縦並び */
       flex-direction: column; /* 縦方向 */
-      gap: 14px; /* カード間の隙間 */
+      gap: 16px; /* カード間の隙間を広めに */
     }
 
-    /* 各お知らせカード */
+    /* 各お知らせカード（左にカテゴリ別カラーバーを配置） */
     .post-card {
       background-color: #ffffff; /* 白背景 */
       border: 1px solid #eaecf0; /* 薄いグレー枠 */
       border-radius: 14px; /* 角丸 */
       overflow: hidden; /* はみ出しを隠す */
       transition: all 0.25s ease; /* ホバーアニメーション */
+      border-left: 4px solid #d5dae3; /* 左のカラーバー（デフォルトはグレー） */
+    }
+
+    /* カテゴリ別の左カラーバー：休講（スレートグレー） */
+    .post-card[data-cat="cancel"] {
+      border-left-color: #64748b; /* 落ち着いたグレーブルー */
+    }
+
+    /* カテゴリ別の左カラーバー：イベント（グリーン） */
+    .post-card[data-cat="event"] {
+      border-left-color: #059669; /* 深いグリーン */
+    }
+
+    /* カテゴリ別の左カラーバー：事務連絡（ブルー） */
+    .post-card[data-cat="info"] {
+      border-left-color: #2b5ea7; /* ブルー */
+    }
+
+    /* カテゴリ別の左カラーバー：重要（レッド） */
+    .post-card[data-cat="important"] {
+      border-left-color: #dc2626; /* 鮮やかな赤 */
     }
 
     /* お知らせカードにカーソルを乗せた時 */
     .post-card:hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); /* ほんのり影 */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); /* 柔らかい影 */
       border-color: #d5dae3; /* 枠線を少し濃く */
+      transform: translateY(-1px); /* ほんの少し浮く */
     }
+
+    /* ホバー時もカラーバーの色を維持 */
+    .post-card[data-cat="cancel"]:hover { border-left-color: #64748b; }
+    .post-card[data-cat="event"]:hover { border-left-color: #059669; }
+    .post-card[data-cat="info"]:hover { border-left-color: #2b5ea7; }
+    .post-card[data-cat="important"]:hover { border-left-color: #dc2626; }
 
     /* お知らせのヘッダー部分（クリック可能） */
     .post-header {
       display: flex; /* 横並び */
       align-items: center; /* 縦中央 */
-      padding: 20px 28px; /* ゆったりした余白 */
+      padding: 22px 28px 22px 24px; /* ゆったりした余白（左はカラーバー分やや狭め） */
       cursor: pointer; /* ポインター */
-      gap: 14px; /* 要素間の隙間 */
+      gap: 16px; /* 要素間の隙間を広めに */
       transition: background-color 0.2s ease; /* ホバーアニメーション */
       user-select: none; /* テキスト選択を無効化 */
     }
@@ -759,41 +903,46 @@
       background-color: #f8f9fc; /* ごく薄い背景 */
     }
 
-    /* カテゴリラベル（共通スタイル） */
+    /* カテゴリラベル（共通スタイル・上品なピル型） */
     .post-category {
-      display: inline-block; /* インラインブロック */
-      padding: 4px 12px; /* 内側余白 */
-      border-radius: 6px; /* 角丸 */
-      font-size: 0.73rem; /* 小さめ */
+      display: inline-flex; /* インラインフレックス */
+      align-items: center; /* 縦中央 */
+      padding: 4px 14px; /* ゆとりある内側余白 */
+      border-radius: 20px; /* ピル型の丸み */
+      font-size: 0.7rem; /* 小さめ */
       font-weight: 600; /* 太字 */
-      letter-spacing: 0.04em; /* 文字間隔 */
+      letter-spacing: 0.06em; /* 広めの文字間隔 */
       white-space: nowrap; /* 改行なし */
       flex-shrink: 0; /* 縮小させない */
+      border: 1px solid transparent; /* 枠線用のスペース確保 */
     }
 
-    /* カテゴリ：休講（グレー系） */
+    /* カテゴリ：休講（スレートグレー系・上品） */
     .cat-cancel {
-      background-color: #f1f3f5; /* 薄いグレー背景 */
-      color: #5a6577; /* グレー文字 */
+      background-color: #f1f5f9; /* 薄いスレート背景 */
+      color: #475569; /* 落ち着いたグレー文字 */
+      border-color: #e2e8f0; /* 薄い枠線 */
     }
 
-    /* カテゴリ：イベント（グリーン系） */
+    /* カテゴリ：イベント（グリーン系・上品） */
     .cat-event {
       background-color: #ecfdf5; /* 薄い緑背景 */
-      color: #047857; /* 緑文字 */
+      color: #047857; /* 深い緑文字 */
+      border-color: #a7f3d0; /* 薄い緑枠線 */
     }
 
-    /* カテゴリ：事務連絡（ブルー系） */
+    /* カテゴリ：事務連絡（ブルー系・上品） */
     .cat-info {
       background-color: #eff6ff; /* 薄い青背景 */
       color: #1d4ed8; /* 青文字 */
+      border-color: #bfdbfe; /* 薄い青枠線 */
     }
 
     /* カテゴリ：重要（レッド系・目立つ） */
     .cat-important {
       background-color: #fef2f2; /* 薄い赤背景 */
       color: #b91c1c; /* 濃い赤文字 */
-      border: 1px solid #fecaca; /* 赤い枠線で強調 */
+      border-color: #fecaca; /* 赤い枠線で強調 */
     }
 
     /* お知らせのタイトルと日付のエリア */
@@ -807,14 +956,14 @@
       font-size: 0.93rem; /* 標準サイズ */
       font-weight: 600; /* 太字 */
       color: #1a2742; /* 深い紺色 */
-      line-height: 1.5; /* 行間 */
+      line-height: 1.6; /* ゆとりある行間 */
     }
 
     /* お知らせの投稿日 */
     .post-date {
-      font-size: 0.76rem; /* 小さめ */
+      font-size: 0.75rem; /* 小さめ */
       color: #94a0b0; /* グレー */
-      margin-top: 3px; /* 上に少し隙間 */
+      margin-top: 4px; /* 上に少し隙間 */
       font-variant-numeric: tabular-nums; /* 数字の幅を揃える */
     }
 
@@ -835,7 +984,7 @@
 
     /* アコーディオンの開閉矢印 */
     .post-arrow {
-      font-size: 0.75rem; /* 小さめ */
+      font-size: 0.7rem; /* 小さめ */
       color: #b4bcc8; /* グレー */
       transition: transform 0.3s ease; /* 回転アニメーション */
       flex-shrink: 0; /* 縮小させない */
@@ -844,6 +993,7 @@
     /* アコーディオンが開いている時の矢印（180度回転） */
     .post-card.open .post-arrow {
       transform: rotate(180deg); /* 上向きに回転 */
+      color: #2b5ea7; /* 開いている時は青色に */
     }
 
     /* お知らせの本文エリア（アコーディオン） */
@@ -855,22 +1005,22 @@
 
     /* 本文の内側コンテンツ */
     .post-body-inner {
-      padding: 0 28px 24px; /* 上なし・左右・下の余白 */
-      border-top: 1px solid #eef0f4; /* 薄い上線 */
-      padding-top: 18px; /* 上線の下に余白 */
+      padding: 0 28px 28px 24px; /* 上なし・右・下・左の余白 */
+      border-top: 1px solid #f0f2f7; /* 薄い上線 */
+      padding-top: 20px; /* 上線の下に余白 */
     }
 
     /* 本文テキスト */
     .post-body-text {
       font-size: 0.9rem; /* やや小さめ */
       color: #3d4a5c; /* 落ち着いた色 */
-      line-height: 2; /* ゆとりある行間 */
+      line-height: 2.1; /* ゆとりある行間 */
       white-space: pre-wrap; /* 改行をそのまま表示 */
     }
 
-    /* お知らせ削除ボタン */
+    /* お知らせ削除ボタン（管理者モードでのみ表示） */
     .post-delete-btn {
-      margin-top: 16px; /* 上の余白 */
+      margin-top: 18px; /* 上の余白 */
       padding: 7px 18px; /* 内側余白 */
       background: none; /* 背景なし */
       border: 1px solid #fcd5d5; /* 薄い赤枠 */
@@ -881,6 +1031,7 @@
       font-weight: 500; /* やや太め */
       cursor: pointer; /* ポインター */
       transition: all 0.25s ease; /* アニメーション */
+      display: none; /* 初期状態は非表示（管理者モードでのみ表示） */
     }
 
     /* 削除ボタンにカーソルを乗せた時 */
@@ -893,8 +1044,9 @@
     .no-posts {
       text-align: center; /* 中央揃え */
       color: #a3adb8; /* 薄いグレー */
-      padding: 56px 16px; /* ゆったりした余白 */
+      padding: 64px 16px; /* ゆったりした余白 */
       font-size: 0.93rem; /* 標準サイズ */
+      line-height: 1.8; /* 行間 */
     }
 
     /* ========================================
@@ -1100,6 +1252,211 @@
     }
 
     /* ========================================
+       ログイン・新規登録画面
+       ======================================== */
+
+    /* ログイン画面の全体ラッパー（画面中央にフォームを配置） */
+    .auth-wrapper {
+      min-height: 100vh; /* 画面の高さいっぱい */
+      display: flex; /* フレックスで中央配置 */
+      align-items: center; /* 縦中央 */
+      justify-content: center; /* 横中央 */
+      padding: 24px; /* 画面端の余白 */
+      background: linear-gradient(135deg, #f0f2f7 0%, #e4e8f1 100%); /* 薄いグラデーション背景 */
+    }
+
+    /* ログイン画面のカード部分 */
+    .auth-card {
+      background-color: #ffffff; /* 白い背景 */
+      border-radius: 20px; /* 大きめの角丸 */
+      padding: 48px 44px; /* ゆったりした内側余白 */
+      width: 100%; /* 横幅いっぱい */
+      max-width: 420px; /* 最大幅を制限 */
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04); /* やわらかい影 */
+      animation: fadeIn 0.4s ease; /* フェードインアニメーション */
+    }
+
+    /* ログイン画面のサイト名（上部ロゴ） */
+    .auth-logo {
+      font-family: "Noto Serif JP", "Yu Mincho", serif; /* 明朝体 */
+      font-size: 1.5rem; /* 大きめ */
+      font-weight: 700; /* 太字 */
+      color: #1a2742; /* 深い紺 */
+      text-align: center; /* 中央揃え */
+      letter-spacing: 0.12em; /* 広い文字間隔 */
+      margin-bottom: 8px; /* 下の余白 */
+    }
+
+    /* ログイン画面のサブテキスト */
+    .auth-subtitle {
+      text-align: center; /* 中央揃え */
+      font-size: 0.82rem; /* 小さめ */
+      color: #94a0b0; /* 薄いグレー */
+      margin-bottom: 36px; /* 下の余白 */
+      letter-spacing: 0.03em; /* 文字間隔 */
+    }
+
+    /* デモ用の注意書きバナー */
+    .auth-demo-notice {
+      background-color: #fef3cd; /* 薄い黄色背景 */
+      border: 1px solid #fbbf24; /* 黄色い枠線 */
+      border-radius: 10px; /* 角丸 */
+      padding: 12px 16px; /* 内側余白 */
+      margin-bottom: 28px; /* 下の余白 */
+      font-size: 0.78rem; /* 小さめ */
+      color: #92400e; /* 茶色い文字 */
+      line-height: 1.6; /* 行間 */
+      text-align: center; /* 中央揃え */
+    }
+
+    /* ログイン画面の見出し（ログイン / 新規登録） */
+    .auth-heading {
+      font-family: "Noto Serif JP", "Yu Mincho", serif; /* 明朝体 */
+      font-size: 1.15rem; /* やや大きめ */
+      font-weight: 600; /* 太字 */
+      color: #1a2742; /* 深い紺 */
+      margin-bottom: 28px; /* 下の余白 */
+      text-align: center; /* 中央揃え */
+      letter-spacing: 0.06em; /* 文字間隔 */
+    }
+
+    /* ログインフォームの各入力グループ */
+    .auth-form-group {
+      margin-bottom: 20px; /* 下の余白 */
+    }
+
+    /* 入力欄のラベル */
+    .auth-form-group label {
+      display: block; /* ブロック表示 */
+      font-size: 0.8rem; /* 小さめ */
+      font-weight: 600; /* 太字 */
+      color: #3d4a5c; /* 落ち着いたグレー */
+      margin-bottom: 8px; /* 下の余白 */
+      letter-spacing: 0.04em; /* 文字間隔 */
+    }
+
+    /* 入力欄の共通スタイル */
+    .auth-input {
+      width: 100%; /* 横幅いっぱい */
+      padding: 12px 16px; /* ゆとりある内側余白 */
+      border: 1.5px solid #dde1e8; /* 薄いグレー枠線 */
+      border-radius: 10px; /* 角丸 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.95rem; /* 文字サイズ */
+      color: #23272f; /* 文字色 */
+      background-color: #fafbfc; /* ごく薄い背景 */
+      transition: all 0.25s ease; /* アニメーション */
+    }
+
+    /* 入力欄にフォーカスした時 */
+    .auth-input:focus {
+      outline: none; /* デフォルトの枠を消す */
+      border-color: #2b5ea7; /* 青い枠線 */
+      box-shadow: 0 0 0 4px rgba(43, 94, 167, 0.08); /* 薄い青の影 */
+      background-color: #ffffff; /* 完全な白に */
+    }
+
+    /* ログインボタン */
+    .auth-submit-btn {
+      width: 100%; /* 横幅いっぱい */
+      padding: 13px 24px; /* 内側余白 */
+      background: linear-gradient(135deg, #2b5ea7, #3d7bd9); /* 青のグラデーション */
+      color: #ffffff; /* 白い文字 */
+      border: none; /* 枠線なし */
+      border-radius: 10px; /* 角丸 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.95rem; /* 文字サイズ */
+      font-weight: 600; /* 太字 */
+      cursor: pointer; /* ポインター */
+      transition: all 0.3s ease; /* アニメーション */
+      letter-spacing: 0.06em; /* 文字間隔 */
+      box-shadow: 0 3px 12px rgba(43, 94, 167, 0.2); /* 影 */
+      margin-top: 8px; /* 上の余白 */
+    }
+
+    /* ログインボタンにカーソルを乗せた時 */
+    .auth-submit-btn:hover {
+      transform: translateY(-1px); /* 少し浮く */
+      box-shadow: 0 6px 20px rgba(43, 94, 167, 0.3); /* 影を深く */
+    }
+
+    /* ログインエラーメッセージ */
+    .auth-error {
+      color: #c53030; /* 赤文字 */
+      font-size: 0.78rem; /* 小さめ */
+      margin-top: 12px; /* 上の余白 */
+      text-align: center; /* 中央揃え */
+      display: none; /* 初期状態は非表示 */
+    }
+
+    /* 画面切り替えリンク（ログイン↔新規登録） */
+    .auth-switch {
+      text-align: center; /* 中央揃え */
+      margin-top: 24px; /* 上の余白 */
+      font-size: 0.82rem; /* 小さめ */
+      color: #6b7a8d; /* グレー */
+    }
+
+    /* 画面切り替えリンクのクリック可能部分 */
+    .auth-switch-link {
+      color: #2b5ea7; /* 青文字 */
+      cursor: pointer; /* ポインター */
+      text-decoration: none; /* 下線なし */
+      font-weight: 600; /* 太字 */
+      transition: color 0.2s ease; /* アニメーション */
+    }
+
+    /* 画面切り替えリンクにカーソルを乗せた時 */
+    .auth-switch-link:hover {
+      color: #1a4a8a; /* 濃い青 */
+      text-decoration: underline; /* 下線を表示 */
+    }
+
+    /* ========================================
+       ヘッダー：ユーザー情報エリア
+       ======================================== */
+
+    /* ユーザー情報の表示エリア（ナビの右側） */
+    .user-info {
+      display: flex; /* 横並び */
+      align-items: center; /* 縦中央 */
+      gap: 12px; /* 要素間の隙間 */
+      margin-left: 16px; /* 左側に余白 */
+    }
+
+    /* ユーザー名の表示 */
+    .user-name {
+      font-size: 0.82rem; /* 小さめ */
+      color: #3d4a5c; /* 落ち着いたグレー */
+      font-weight: 500; /* やや太め */
+      white-space: nowrap; /* 改行なし */
+      max-width: 120px; /* 最大幅を制限 */
+      overflow: hidden; /* はみ出しを隠す */
+      text-overflow: ellipsis; /* はみ出し部分に「...」 */
+    }
+
+    /* ログアウトボタン（ヘッダー用） */
+    .header-logout-btn {
+      padding: 5px 14px; /* 内側余白 */
+      background: none; /* 背景なし */
+      border: 1px solid #dde1e8; /* グレー枠 */
+      border-radius: 8px; /* 角丸 */
+      color: #6b7a8d; /* グレー文字 */
+      font-family: "Noto Sans JP", sans-serif; /* ゴシック体 */
+      font-size: 0.73rem; /* 小さめ */
+      font-weight: 500; /* やや太め */
+      cursor: pointer; /* ポインター */
+      transition: all 0.2s ease; /* アニメーション */
+      white-space: nowrap; /* 改行なし */
+    }
+
+    /* ログアウトボタンにカーソルを乗せた時 */
+    .header-logout-btn:hover {
+      background-color: #f0f2f7; /* 薄いグレー背景 */
+      border-color: #b4bcc8; /* やや濃い枠線 */
+    }
+
+    /* ========================================
        レスポンシブ対応（スマホ向けの調整）
        ======================================== */
 
@@ -1118,6 +1475,23 @@
       /* サイト名の文字を少し小さく */
       .site-title {
         font-size: 1.15rem; /* 文字サイズ縮小 */
+      }
+
+      /* ログインカードの余白を縮小 */
+      .auth-card {
+        padding: 36px 28px; /* 余白を縮小 */
+      }
+
+      /* ユーザー名の最大幅を縮小 */
+      .user-name {
+        max-width: 80px; /* モバイルでは短く */
+        font-size: 0.75rem; /* さらに小さく */
+      }
+
+      /* ログアウトボタンを小さく */
+      .header-logout-btn {
+        padding: 4px 10px; /* 余白を縮小 */
+        font-size: 0.7rem; /* 文字を小さく */
       }
 
       /* メインコンテンツの余白を縮小 */
@@ -1192,14 +1566,30 @@
         gap: 14px; /* 隙間 */
       }
 
+      /* 管理者エリアも折り返し対応 */
+      .board-header-right {
+        flex-wrap: wrap; /* 折り返し可能 */
+        gap: 8px; /* 隙間を縮小 */
+      }
+
+      /* パスワード入力欄を小さく */
+      .admin-password-input {
+        width: 110px; /* 幅を縮小 */
+      }
+
       /* お知らせヘッダーの余白を縮小 */
       .post-header {
-        padding: 16px 18px; /* 余白を縮小 */
+        padding: 18px 18px 18px 16px; /* 左はカラーバー分少し狭め */
+      }
+
+      /* お知らせカードのホバー効果をモバイル用に無効化 */
+      .post-card:hover {
+        transform: none; /* 浮き上がり無効 */
       }
 
       /* お知らせ本文の余白を縮小 */
       .post-body-inner {
-        padding: 0 18px 18px; /* 余白を縮小 */
+        padding: 0 18px 18px 16px; /* 余白を縮小 */
         padding-top: 14px; /* 上側の余白 */
       }
     }
@@ -1207,9 +1597,96 @@
 </head>
 <body>
   <!-- ========================================
-       ヘッダー部分
+       ログイン・新規登録画面
+       ※ これは練習用デモです。実在の個人情報は入力しないでください。
        ======================================== -->
-  <header class="header">
+
+  <!-- ログイン画面（未ログイン時に表示） -->
+  <div class="auth-wrapper" id="auth-login-page">
+    <div class="auth-card">
+      <!-- サイトロゴ -->
+      <div class="auth-logo">学内ポータル</div>
+      <!-- サブテキスト -->
+      <div class="auth-subtitle">大学生活をサポートするポータルサイト</div>
+      <!-- 見出し -->
+      <div class="auth-heading">ログイン</div>
+      <!-- ログインフォーム -->
+      <form id="auth-login-form" autocomplete="off">
+        <!-- メールアドレス入力欄 -->
+        <div class="auth-form-group">
+          <label for="login-email">メールアドレス</label>
+          <input type="email" class="auth-input" id="login-email" placeholder="例：demo@example.ac.jp" />
+        </div>
+        <!-- パスワード入力欄 -->
+        <div class="auth-form-group">
+          <label for="login-password">パスワード</label>
+          <input type="password" class="auth-input" id="login-password" placeholder="パスワードを入力" />
+        </div>
+        <!-- ログインボタン -->
+        <button type="submit" class="auth-submit-btn">ログイン</button>
+        <!-- エラーメッセージ -->
+        <div class="auth-error" id="login-error">メールアドレスまたはパスワードが正しくありません</div>
+      </form>
+      <!-- 新規登録への切り替えリンク -->
+      <div class="auth-switch">
+        アカウントをお持ちでない方は
+        <span class="auth-switch-link" id="show-register">新規登録</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新規登録画面（リンク切り替えで表示） -->
+  <div class="auth-wrapper" id="auth-register-page" style="display: none;">
+    <div class="auth-card">
+      <!-- サイトロゴ -->
+      <div class="auth-logo">学内ポータル</div>
+      <!-- サブテキスト -->
+      <div class="auth-subtitle">大学生活をサポートするポータルサイト</div>
+      <!-- デモ用注意書きバナー -->
+      <div class="auth-demo-notice">
+        これはデモです。実在の個人情報は入力しないでください。
+      </div>
+      <!-- 見出し -->
+      <div class="auth-heading">新規登録</div>
+      <!-- 新規登録フォーム -->
+      <form id="auth-register-form" autocomplete="off">
+        <!-- 名前入力欄 -->
+        <div class="auth-form-group">
+          <label for="register-name">名前</label>
+          <input type="text" class="auth-input" id="register-name" placeholder="例：山田 太郎" />
+        </div>
+        <!-- 学籍番号入力欄 -->
+        <div class="auth-form-group">
+          <label for="register-student-id">学籍番号</label>
+          <input type="text" class="auth-input" id="register-student-id" placeholder="例：24A1234" />
+        </div>
+        <!-- メールアドレス入力欄 -->
+        <div class="auth-form-group">
+          <label for="register-email">メールアドレス</label>
+          <input type="email" class="auth-input" id="register-email" placeholder="例：demo@example.ac.jp" />
+        </div>
+        <!-- パスワード入力欄 -->
+        <div class="auth-form-group">
+          <label for="register-password">パスワード</label>
+          <input type="password" class="auth-input" id="register-password" placeholder="パスワードを入力" />
+        </div>
+        <!-- 登録ボタン -->
+        <button type="submit" class="auth-submit-btn">登録する</button>
+        <!-- エラーメッセージ -->
+        <div class="auth-error" id="register-error"></div>
+      </form>
+      <!-- ログインへの切り替えリンク -->
+      <div class="auth-switch">
+        既にアカウントをお持ちの方は
+        <span class="auth-switch-link" id="show-login">ログイン</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
+       ヘッダー部分（ログイン後に表示）
+       ======================================== -->
+  <header class="header" id="app-header" style="display: none;">
     <div class="header-inner">
       <!-- サイト名（クリックでホームに戻る） -->
       <div class="site-title" id="site-title" role="button" tabindex="0" aria-label="ホームに戻る">学内ポータル</div>
@@ -1220,13 +1697,20 @@
         <!-- 掲示板ボタン -->
         <button class="nav-btn" data-page="board">掲示板</button>
       </nav>
+      <!-- ユーザー情報エリア（ログイン中のユーザー名とログアウト） -->
+      <div class="user-info">
+        <!-- ログイン中のユーザー名を表示 -->
+        <span class="user-name" id="header-user-name"></span>
+        <!-- ログアウトボタン -->
+        <button class="header-logout-btn" id="header-logout-btn">ログアウト</button>
+      </div>
     </div>
   </header>
 
   <!-- ========================================
-       メインコンテンツ
+       メインコンテンツ（ログイン後に表示）
        ======================================== -->
-  <main class="main">
+  <main class="main" id="app-main" style="display: none;">
 
     <!-- ================================
          ホーム画面
@@ -1234,7 +1718,7 @@
     <div id="page-home" class="page active">
       <!-- ウェルカムメッセージのカード -->
       <div class="card welcome">
-        <h2>ようこそ、学内ポータルへ</h2>
+        <h2 id="welcome-heading">ようこそ、学内ポータルへ</h2>
         <p>授業の時間割を管理できます。上部の「時間割」から登録を始めましょう。</p>
       </div>
       <!-- 今日の時間割カード -->
@@ -1316,11 +1800,30 @@
          掲示板ページ
          ================================ -->
     <div id="page-board" class="page">
-      <!-- 掲示板ヘッダー（タイトルと新規投稿ボタン） -->
+      <!-- 掲示板ヘッダー（タイトルと管理者UI） -->
       <div class="board-header">
+        <!-- 左側：見出し -->
         <h2>掲示板</h2>
-        <!-- 新規投稿ボタン -->
-        <button class="btn-new-post" id="btn-new-post">新規投稿</button>
+        <!-- 右側：管理者ログインUI + 新規投稿ボタン -->
+        <div class="board-header-right">
+          <!-- 管理者ログインリンク（未ログイン時に表示） -->
+          <span class="admin-login-link" id="admin-login-link">管理者ログイン</span>
+          <!-- パスワード入力フォーム（リンククリックで表示） -->
+          <div class="admin-login-form" id="admin-login-form">
+            <!-- パスワード入力欄 -->
+            <input type="password" class="admin-password-input" id="admin-password" placeholder="パスワード" />
+            <!-- ログインボタン -->
+            <button type="button" class="admin-login-btn" id="admin-login-btn">ログイン</button>
+            <!-- エラーメッセージ -->
+            <span class="admin-error" id="admin-error">パスワードが違います</span>
+          </div>
+          <!-- 管理者バッジ（ログイン中に表示） -->
+          <span class="admin-badge" id="admin-badge">管理者</span>
+          <!-- ログアウトボタン（ログイン中に表示） -->
+          <button type="button" class="admin-logout-btn" id="admin-logout-btn">ログアウト</button>
+          <!-- 新規投稿ボタン（管理者モードでのみ表示） -->
+          <button class="btn-new-post" id="btn-new-post">新規投稿</button>
+        </div>
       </div>
       <!-- お知らせ一覧の表示先 -->
       <div id="post-list" class="post-list"></div>
@@ -1427,6 +1930,128 @@
        ======================================== -->
   <script>
     // ========================================
+    // ★★★ セキュリティに関する重要な注意 ★★★
+    //
+    // これは練習用・デモ用のログイン機能です。
+    // 本物の認証（セキュリティ）は一切ありません。
+    //
+    // 【危険な点】
+    // ・パスワードはlocalStorageにそのまま平文で保存されます
+    //   （暗号化・ハッシュ化されていません）
+    // ・誰でもブラウザの開発者ツールからパスワードを見られます
+    // ・通信の暗号化（HTTPS）やサーバーサイド認証がありません
+    // ・セッション管理やトークン認証もありません
+    //
+    // 【実運用では絶対にこの方式を使わないでください】
+    // ・パスワードはbcrypt等でハッシュ化して保存する
+    // ・サーバーサイドで認証を行う（JWT等を使う）
+    // ・HTTPS通信を必須にする
+    // ・入力値のバリデーションをサーバー側でも行う
+    //
+    // このデモでは架空のテストユーザーのみを想定しています。
+    // 実在の個人情報は絶対に入力しないでください。
+    // ========================================
+
+    // ========================================
+    // ユーザー認証関連の定数とlocalStorageキー
+    // ========================================
+    const STORAGE_KEY_USERS = "portal_users";        // 登録ユーザー一覧のキー
+    const STORAGE_KEY_SESSION = "portal_session";    // ログインセッションのキー
+
+    // ========================================
+    // ユーザー認証：登録済みユーザー一覧を読み込む
+    // ※ パスワードが平文で保存されています（デモ用）
+    // ========================================
+    function loadUsers() {
+      const data = localStorage.getItem(STORAGE_KEY_USERS); // JSON取得
+      return data ? JSON.parse(data) : []; // 配列として返す（初回は空配列）
+    }
+
+    // ========================================
+    // ユーザー認証：ユーザー一覧を保存する
+    // ※ パスワードが平文で保存されます（本番では絶対にNG）
+    // ========================================
+    function saveUsers(users) {
+      localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(users)); // JSON化して保存
+    }
+
+    // ========================================
+    // ユーザー認証：現在のログインセッションを読み込む
+    // ========================================
+    function loadSession() {
+      const data = localStorage.getItem(STORAGE_KEY_SESSION); // JSON取得
+      return data ? JSON.parse(data) : null; // セッション情報を返す（未ログインはnull）
+    }
+
+    // ========================================
+    // ユーザー認証：ログインセッションを保存する
+    // ========================================
+    function saveSession(user) {
+      // パスワードはセッションに含めない（最低限の配慮）
+      const session = {
+        name: user.name,           // ユーザー名
+        email: user.email,         // メールアドレス
+        studentId: user.studentId  // 学籍番号
+      };
+      localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(session)); // 保存
+    }
+
+    // ========================================
+    // ユーザー認証：ログインセッションを削除する
+    // ========================================
+    function clearSession() {
+      localStorage.removeItem(STORAGE_KEY_SESSION); // セッション情報を削除
+    }
+
+    // ========================================
+    // XSS対策：HTMLエスケープ関数
+    // ========================================
+    function escapeHtml(str) {
+      if (!str) return ""; // 空文字チェック
+      return str
+        .replace(/&/g, "&amp;")   // &をエスケープ
+        .replace(/</g, "&lt;")    // <をエスケープ
+        .replace(/>/g, "&gt;")    // >をエスケープ
+        .replace(/"/g, "&quot;")  // "をエスケープ
+        .replace(/'/g, "&#039;"); // 'をエスケープ
+    }
+
+    // ========================================
+    // 画面の表示切り替え：ログイン前 / ログイン後
+    // ========================================
+    function showApp(user) {
+      // ログイン・登録画面を非表示にする
+      document.getElementById("auth-login-page").style.display = "none";    // ログイン画面を隠す
+      document.getElementById("auth-register-page").style.display = "none"; // 登録画面を隠す
+      // アプリ本体を表示する
+      document.getElementById("app-header").style.display = "block"; // ヘッダーを表示
+      document.getElementById("app-main").style.display = "block";   // メインコンテンツを表示
+      // ヘッダーにユーザー名を表示
+      document.getElementById("header-user-name").textContent = user.name; // ユーザー名をセット
+      // ウェルカムメッセージにユーザー名を反映
+      document.getElementById("welcome-heading").textContent = "ようこそ、" + user.name + "さん"; // 挨拶
+      // 各画面を初期描画
+      renderTodayClasses(); // 今日の時間割を表示
+      renderTimetable();    // 時間割テーブルを描画
+      renderPosts();        // 掲示板を描画
+    }
+
+    // ========================================
+    // 画面の表示切り替え：ログイン画面を表示
+    // ========================================
+    function showAuthPage() {
+      // アプリ本体を非表示にする
+      document.getElementById("app-header").style.display = "none"; // ヘッダーを隠す
+      document.getElementById("app-main").style.display = "none";   // メインコンテンツを隠す
+      // ログイン画面を表示（CSSのauth-wrapperはflexなのでflex指定）
+      document.getElementById("auth-login-page").style.display = "flex";  // ログイン画面を表示
+      document.getElementById("auth-register-page").style.display = "none"; // 登録画面は隠す
+      // フォームをリセット
+      document.getElementById("auth-login-form").reset();    // ログインフォームをクリア
+      document.getElementById("login-error").style.display = "none"; // エラーを隠す
+    }
+
+    // ========================================
     // 外部リンクのURL設定
     // ※ 実際のURLに差し替える場合はここを変更してください
     // ========================================
@@ -1500,6 +2125,14 @@
     const NEW_DAYS = 3;
 
     // ========================================
+    // 管理者モードの設定
+    // ※ 注意：これは簡易的なクライアントサイドの認証です。
+    // ※ 実際のセキュリティは提供しません（パスワードはソースコードに含まれています）。
+    // ※ 本番環境ではサーバーサイド認証を使用してください。
+    // ========================================
+    const ADMIN_PASSWORD = "admin123"; // 管理者パスワード（仮設定）
+
+    // ========================================
     // 状態管理の変数
     // ========================================
 
@@ -1508,6 +2141,9 @@
 
     // 現在モーダルで編集中のコマの情報
     let editingCell = null; // { dayIndex: 0-5, period: 1-7 }
+
+    // 管理者モードかどうか（ページを閉じるとリセットされる）
+    let isAdminMode = false;
 
     // ========================================
     // 時間割：localStorageからデータを読み込む
@@ -1713,15 +2349,6 @@
     }
 
     // ========================================
-    // HTMLエスケープ関数（XSS対策）
-    // ========================================
-    function escapeHtml(text) {
-      const div = document.createElement("div"); // 一時div
-      div.appendChild(document.createTextNode(text)); // テキストノード追加
-      return div.innerHTML; // エスケープ済みHTMLを返す
-    }
-
-    // ========================================
     // 時間割モーダルを開く関数
     // ========================================
     function openModal(dayIndex, period) {
@@ -1894,16 +2521,16 @@
       const container = document.getElementById("post-list"); // 表示先取得
       let posts = loadPosts(); // データ読み込み
 
-      // 初回（データなし）の場合はサンプルデータを入れる
+      // localStorageにデータが存在しない場合（初回アクセスまたはデータ削除後）
       if (posts === null) {
-        posts = getDefaultPosts(); // サンプル生成
-        savePosts(posts); // 保存
+        posts = getDefaultPosts(); // サンプルデータを生成
+        savePosts(posts); // localStorageに保存して次回以降は読み込める
       }
 
       // お知らせがゼロ件の場合
       if (posts.length === 0) {
-        container.innerHTML = '<div class="no-posts">お知らせはまだありません。</div>';
-        return;
+        container.innerHTML = '<div class="no-posts">お知らせはまだありません。</div>'; // 空メッセージ
+        return; // 描画終了
       }
 
       // 新しい投稿を上に表示するため日付の降順でソート
@@ -1914,14 +2541,15 @@
       // HTML組み立て
       let html = "";
       sorted.forEach(function (post) {
-        const cat = CATEGORY_MAP[post.category] || CATEGORY_MAP.info; // カテゴリ情報
+        const cat = CATEGORY_MAP[post.category] || CATEGORY_MAP.info; // カテゴリ情報取得
         const isNew = isNewPost(post.date); // 新着判定
 
-        html += '<div class="post-card" data-id="' + post.id + '">'; // カード開始
+        // カードにdata-cat属性を追加（CSSのカラーバー用）
+        html += '<div class="post-card" data-id="' + post.id + '" data-cat="' + escapeHtml(post.category) + '">'; // カード開始
 
         // --- ヘッダー（クリックで本文展開） ---
         html += '<div class="post-header" onclick="togglePost(this)">';
-        // カテゴリラベル
+        // カテゴリラベル（ピル型）
         html += '<span class="post-category ' + cat.css + '">' + escapeHtml(cat.label) + '</span>';
         // タイトルと日付のエリア
         html += '<div class="post-title-area">';
@@ -1930,7 +2558,7 @@
         html += '</div>';
         // NEWマーク（3日以内のみ表示）
         if (isNew) {
-          html += '<span class="post-new">NEW</span>';
+          html += '<span class="post-new">NEW</span>'; // 新着マーク
         }
         // 開閉矢印
         html += '<span class="post-arrow">&#9660;</span>'; // ▼
@@ -1939,16 +2567,21 @@
         // --- 本文（アコーディオン、初期状態は閉じている） ---
         html += '<div class="post-body">';
         html += '<div class="post-body-inner">';
-        html += '<div class="post-body-text">' + escapeHtml(post.body) + '</div>'; // 本文
-        // 削除ボタン
-        html += '<button class="post-delete-btn" onclick="deletePost(' + post.id + ')">この投稿を削除</button>';
+        html += '<div class="post-body-text">' + escapeHtml(post.body) + '</div>'; // 本文テキスト
+        // 削除ボタン（管理者モード時のみ表示されるがHTMLは常に出力）
+        html += '<button class="post-delete-btn" onclick="deletePost(' + post.id + ')"';
+        // 管理者モードならdisplay:blockにする
+        if (isAdminMode) {
+          html += ' style="display:block"'; // 管理者モード時は表示
+        }
+        html += '>この投稿を削除</button>';
         html += '</div>';
         html += '</div>'; // 本文終了
 
         html += '</div>'; // カード終了
       });
 
-      container.innerHTML = html; // 表示
+      container.innerHTML = html; // DOMに挿入して表示
     }
 
     // ========================================
@@ -2157,11 +2790,185 @@
     });
 
     // ========================================
-    // 初期表示
+    // 管理者モード：UIの表示切り替え関数
+    // ※ これは簡易的なクライアントサイドの仕組みです。
+    // ※ パスワードはJSソースに含まれており、本物の認証ではありません。
+    // ※ 本番環境ではサーバーサイド認証（JWT等）を使用してください。
     // ========================================
-    renderTodayClasses(); // 今日の時間割を表示
-    renderTimetable(); // 時間割テーブルを描画
-    renderPosts(); // 掲示板を描画（初回はサンプルデータが入る）
+    function updateAdminUI() {
+      // 管理者モードかどうかで各UIの表示を切り替える
+      if (isAdminMode) {
+        // --- 管理者としてログイン中 ---
+        document.getElementById("admin-login-link").style.display = "none"; // ログインリンクを隠す
+        document.getElementById("admin-login-form").classList.remove("show"); // パスワード入力を隠す
+        document.getElementById("admin-badge").style.display = "inline-block"; // 管理者バッジ表示
+        document.getElementById("admin-logout-btn").style.display = "inline-block"; // ログアウト表示
+        document.getElementById("btn-new-post").style.display = "inline-block"; // 新規投稿ボタン表示
+      } else {
+        // --- 一般閲覧モード ---
+        document.getElementById("admin-login-link").style.display = "inline"; // ログインリンク表示
+        document.getElementById("admin-login-form").classList.remove("show"); // パスワード入力を隠す
+        document.getElementById("admin-badge").style.display = "none"; // 管理者バッジ非表示
+        document.getElementById("admin-logout-btn").style.display = "none"; // ログアウト非表示
+        document.getElementById("btn-new-post").style.display = "none"; // 新規投稿ボタン非表示
+      }
+      document.getElementById("admin-error").style.display = "none"; // エラー非表示
+      document.getElementById("admin-password").value = ""; // パスワード欄クリア
+      renderPosts(); // 掲示板を再描画（削除ボタンの表示を更新）
+    }
+
+    // 「管理者ログイン」リンクをクリックした時
+    document.getElementById("admin-login-link").addEventListener("click", function () {
+      document.getElementById("admin-login-form").classList.add("show"); // パスワード入力フォームを表示
+      this.style.display = "none"; // リンク自体を隠す
+      document.getElementById("admin-error").style.display = "none"; // エラー非表示
+      setTimeout(function () {
+        document.getElementById("admin-password").focus(); // パスワード欄にフォーカス
+      }, 100);
+    });
+
+    // ログインボタンをクリックした時
+    document.getElementById("admin-login-btn").addEventListener("click", function () {
+      var pw = document.getElementById("admin-password").value; // 入力されたパスワードを取得
+      if (pw === ADMIN_PASSWORD) {
+        // パスワードが正しい場合
+        isAdminMode = true; // 管理者モードに切り替え
+        updateAdminUI(); // UI更新
+      } else {
+        // パスワードが間違っている場合
+        document.getElementById("admin-error").style.display = "inline"; // エラーメッセージ表示
+        document.getElementById("admin-password").value = ""; // 入力欄クリア
+        document.getElementById("admin-password").focus(); // フォーカスを戻す
+      }
+    });
+
+    // パスワード入力欄でEnterキーを押した時もログイン実行
+    document.getElementById("admin-password").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault(); // デフォルト動作防止
+        document.getElementById("admin-login-btn").click(); // ログインボタンのクリックを発火
+      }
+    });
+
+    // ログアウトボタンをクリックした時
+    document.getElementById("admin-logout-btn").addEventListener("click", function () {
+      isAdminMode = false; // 管理者モードを解除
+      updateAdminUI(); // UI更新
+    });
+
+    // ========================================
+    // ログイン画面 ↔ 新規登録画面の切り替え
+    // ========================================
+
+    // 「新規登録」リンクをクリックした時
+    document.getElementById("show-register").addEventListener("click", function () {
+      document.getElementById("auth-login-page").style.display = "none";     // ログイン画面を隠す
+      document.getElementById("auth-register-page").style.display = "flex";  // 登録画面を表示（flex）
+      document.getElementById("auth-register-form").reset();                 // フォームリセット
+      document.getElementById("register-error").style.display = "none";      // エラーを隠す
+    });
+
+    // 「ログイン」リンクをクリックした時
+    document.getElementById("show-login").addEventListener("click", function () {
+      document.getElementById("auth-register-page").style.display = "none";  // 登録画面を隠す
+      document.getElementById("auth-login-page").style.display = "flex";     // ログイン画面を表示（flex）
+      document.getElementById("auth-login-form").reset();                    // フォームリセット
+      document.getElementById("login-error").style.display = "none";         // エラーを隠す
+    });
+
+    // ========================================
+    // ログインフォームの送信処理
+    // ========================================
+    document.getElementById("auth-login-form").addEventListener("submit", function (e) {
+      e.preventDefault(); // ページリロードを防止
+      var email = document.getElementById("login-email").value.trim();       // メールアドレス取得
+      var password = document.getElementById("login-password").value;        // パスワード取得
+      var users = loadUsers(); // 登録ユーザー一覧を読み込む
+
+      // メールアドレスとパスワードが一致するユーザーを検索
+      var found = users.find(function (u) {
+        return u.email === email && u.password === password; // 一致判定
+      });
+
+      if (found) {
+        // ログイン成功
+        saveSession(found);  // セッションを保存（リロードしても維持される）
+        showApp(found);      // アプリ画面を表示
+      } else {
+        // ログイン失敗
+        document.getElementById("login-error").style.display = "block"; // エラーメッセージ表示
+      }
+    });
+
+    // ========================================
+    // 新規登録フォームの送信処理
+    // ========================================
+    document.getElementById("auth-register-form").addEventListener("submit", function (e) {
+      e.preventDefault(); // ページリロードを防止
+      var name = document.getElementById("register-name").value.trim();            // 名前取得
+      var studentId = document.getElementById("register-student-id").value.trim(); // 学籍番号取得
+      var email = document.getElementById("register-email").value.trim();          // メール取得
+      var password = document.getElementById("register-password").value;           // パスワード取得
+      var errorEl = document.getElementById("register-error");                     // エラー要素
+
+      // --- バリデーション ---
+      // すべての項目が入力されているかチェック
+      if (!name || !studentId || !email || !password) {
+        errorEl.textContent = "すべての項目を入力してください"; // エラーメッセージ設定
+        errorEl.style.display = "block"; // エラー表示
+        return; // 処理中断
+      }
+
+      // パスワードの長さチェック（最低4文字）
+      if (password.length < 4) {
+        errorEl.textContent = "パスワードは4文字以上で入力してください"; // エラーメッセージ
+        errorEl.style.display = "block"; // エラー表示
+        return; // 処理中断
+      }
+
+      var users = loadUsers(); // 既存ユーザー一覧を読み込む
+
+      // 同じメールアドレスのユーザーがいないかチェック
+      var exists = users.find(function (u) { return u.email === email; });
+      if (exists) {
+        errorEl.textContent = "このメールアドレスは既に登録されています"; // エラーメッセージ
+        errorEl.style.display = "block"; // エラー表示
+        return; // 処理中断
+      }
+
+      // 新しいユーザーオブジェクトを作成
+      // ※ パスワードが平文で保存されます（デモ用・本番ではNG）
+      var newUser = {
+        name: name,           // 名前
+        studentId: studentId, // 学籍番号
+        email: email,         // メールアドレス
+        password: password    // パスワード（平文※デモ用）
+      };
+
+      users.push(newUser); // ユーザー一覧に追加
+      saveUsers(users);    // localStorageに保存
+      saveSession(newUser); // セッションを保存（自動ログイン）
+      showApp(newUser);     // アプリ画面を表示
+    });
+
+    // ========================================
+    // ヘッダーのログアウトボタン
+    // ========================================
+    document.getElementById("header-logout-btn").addEventListener("click", function () {
+      clearSession(); // セッションを削除
+      showAuthPage(); // ログイン画面に戻る
+    });
+
+    // ========================================
+    // 初期表示：セッションがあればアプリ、なければログイン画面
+    // ※ すべての定数・関数・イベントリスナーの登録後に実行する
+    // ========================================
+    var currentSession = loadSession(); // セッション情報を読み込む
+    if (currentSession) {
+      showApp(currentSession); // ログイン済み → アプリを表示
+    } else {
+      showAuthPage(); // 未ログイン → ログイン画面を明示的に表示
+    }
   </script>
 </body>
 </html>
